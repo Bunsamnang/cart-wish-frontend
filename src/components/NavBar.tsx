@@ -56,20 +56,20 @@ const NavBar = ({ onOpenLoginModal, onOpenSignupModal }: NavBarProps) => {
         `}
       >
         <li className="py-2 px-4 hover:text-white transition-colors duration-300 ease-in-out">
-          <a href="">Home</a>
+          <a href="/">Home</a>
         </li>
         <li className="py-2 px-4 hover:text-white transition-colors duration-300 ease-in-out">
-          <a href=""> Products</a>
+          <a href="/product"> Products</a>
         </li>
         <li className="py-2 px-4 hover:text-white transition-colors duration-300 ease-in-out">
-          <a href=""> My orders</a>
+          <a href="/myorder"> My orders</a>
         </li>
         <li
           className={`py-2 px-4 mr-4  hover:text-white transition-colors duration-300 ease-in-out ${
             isExpanded ? "mb-4" : ""
           }`}
         >
-          <a href=""> Cart(0)</a>
+          <a href="/cart"> Cart(0)</a>
         </li>
 
         <button

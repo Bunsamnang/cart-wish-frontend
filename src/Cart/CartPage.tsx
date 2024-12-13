@@ -1,13 +1,9 @@
 import { User } from "lucide-react";
 import Table from "../common/Table";
 
-interface CartPageProps {
-  onSetTotal: (total: number) => void;
-}
-
-const CartPage = ({ onSetTotal }: CartPageProps) => {
+const CartPage = () => {
   return (
-    <section className="cart-page flex flex-col items-center ">
+    <section className="cart-page flex flex-col items-center mt-5">
       <div className="user_details flex items-center gap-4">
         <User className="bg-slate-300 p-2 rounded-full" size={60} />
         <div>
@@ -18,7 +14,6 @@ const CartPage = ({ onSetTotal }: CartPageProps) => {
 
       <Table
         headings={["Item", "Price", "Quantity", "Total", "Remove"]}
-        onSetTotal={onSetTotal}
         carts={[
           {
             item: "iPhone 16",

@@ -53,10 +53,14 @@ const SignupModal = ({ openModal, onCloseModal }: SignupModalProps) => {
       <ModalBody>
         <form id="signupForm" onSubmit={handleSubmit(onSubmit)}>
           <div className="flex flex-col items-center mb-2">
-            <User
-              size={80}
-              className="bg-slate-900 rounded-full p-1 text-white"
-            />
+            {profilePic ? (
+              <img
+                src={URL.createObjectURL(profilePic)}
+                className="w-28 h-28 object-cover rounded-full"
+              />
+            ) : (
+              <User className="bg-slate-900 w-28 h-28 rounded-full p-2 text-white" />
+            )}
             <input
               type="file"
               accept="image/*"
