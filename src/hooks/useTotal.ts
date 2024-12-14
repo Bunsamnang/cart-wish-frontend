@@ -1,5 +1,5 @@
 import { useContext } from "react";
-import TotalContext from "../TotalContext";
+import TotalContext from "../Contexts/TotalContext";
 
 export const useTotal = () => {
   const context = useContext(TotalContext);

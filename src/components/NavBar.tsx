@@ -1,5 +1,6 @@
 import { AlignJustify } from "lucide-react";
 import { useEffect, useState } from "react";
+import Link from "../common/Link";
 
 interface NavBarProps {
   onOpenLoginModal: () => void;
@@ -56,20 +57,20 @@ const NavBar = ({ onOpenLoginModal, onOpenSignupModal }: NavBarProps) => {
         `}
       >
         <li className="py-2 px-4 hover:text-white transition-colors duration-300 ease-in-out">
-          <a href="/">Home</a>
+          <Link link="/" title="Home" />
         </li>
         <li className="py-2 px-4 hover:text-white transition-colors duration-300 ease-in-out">
-          <a href="/product"> Products</a>
+          <Link link="/products" title="Products" />
         </li>
         <li className="py-2 px-4 hover:text-white transition-colors duration-300 ease-in-out">
-          <a href="/myorder"> My orders</a>
+          <Link link="/myorder" title="MyOrder" />
         </li>
         <li
           className={`py-2 px-4 mr-4  hover:text-white transition-colors duration-300 ease-in-out ${
             isExpanded ? "mb-4" : ""
           }`}
         >
-          <a href="/cart"> Cart(0)</a>
+          <Link link="/cart" title={`Cart(${0})`} />
         </li>
 
         <button

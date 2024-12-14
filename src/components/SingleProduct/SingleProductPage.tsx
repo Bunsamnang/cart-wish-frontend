@@ -18,7 +18,7 @@ const SingleProductPage = () => {
   const [selectedImage, setSelectedImage] = useState(0);
   const { title, description, price, images } = product;
   return (
-    <section className="grid grid-cols-[2fr_1.6fr] place-items-center">
+    <section className="grid grid-cols-[2fr_1.6fr] place-items-center mt-5">
       <div className="flex gap-6">
         <div className="flex flex-col justify-center gap-4 single-product-thumbnail">
           {images.map((image, index) => (
