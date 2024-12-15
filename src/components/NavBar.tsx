@@ -1,6 +1,7 @@
 import { AlignJustify } from "lucide-react";
 import { useEffect, useState } from "react";
 import Link from "../common/Link";
+import { NavLink } from "react-router-dom";
 
 interface NavBarProps {
   onOpenLoginModal: () => void;
@@ -34,12 +35,12 @@ const NavBar = ({ onOpenLoginModal, onOpenSignupModal }: NavBarProps) => {
        ${isExpanded ? "h-fit" : ""} 
       `}
     >
-      <a
-        href=""
+      <NavLink
+        to={"/"}
         className="text-2xl font-semibold transition-all duration-300 "
       >
         Cart Wish
-      </a>
+      </NavLink>
 
       <AlignJustify
         size={35}

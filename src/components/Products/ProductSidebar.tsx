@@ -4,36 +4,16 @@ import {
   SidebarItemGroup,
   SidebarItems,
 } from "flowbite-react";
-import { useEffect, useState } from "react";
-import api_client from "../../utils/api_client";
 
-interface Category {
-  image: string;
-  name: string;
-  _id: string;
-}
+import useData, { Product } from "../../hooks/useData";
 
 const ProductSidebar = () => {
-  const [categories, setCategories] = useState<Category[]>([]);
-  const [errorMsg, setErrorMsg] = useState("");
-
-  useEffect(() => {
-    async function fetchingCategory() {
-      try {
-        const res = await api_client.get("/category");
-        const data = await res.data;
-
-        setCategories(data);
-      } catch (error) {
-        if (error instanceof Error) {
-          setErrorMsg(error.message);
-        }
-        console.error(error);
-      }
+  const { data: categories, errorMsg } = useData("/category", (res) => {
+    if (Array.isArray(res)) {
+      return res as Product[];
     }
-
-    fetchingCategory();
-  }, []);
+    throw new Error("Invalid response structure");
+  });
 
   return (
     <aside className="bg-white">
@@ -41,20 +21,21 @@ const ProductSidebar = () => {
       <Sidebar className="w-full bg-white !shadow-lg !rounded">
         <SidebarItems>
           {errorMsg ? (
-            <p className="text-red-500 text-center">{errorMsg}</p>
+            <p className="text-red-500 ">{errorMsg}</p>
           ) : (
             <SidebarItemGroup>
-              {categories.map((category) => (
-                <SidebarItem href="/">
-                  <span className="text-xl inline-flex justify-center items-center gap-2">
-                    <img
-                      src={`http://localhost:5000/category/${category.image}`}
-                      className="w-5 h-5"
-                    />
-                    {category.name}
-                  </span>{" "}
-                </SidebarItem>
-              ))}
+              {categories &&
+                categories.map((category) => (
+                  <SidebarItem href="/" key={category._id}>
+                    <span className="text-xl inline-flex justify-center items-center gap-2">
+                      <img
+                        src={`http://localhost:5000/category/${category.image}`}
+                        className="w-5 h-5"
+                      />
+                      {category.name}
+                    </span>{" "}
+                  </SidebarItem>
+                ))}
             </SidebarItemGroup>
           )}
         </SidebarItems>
