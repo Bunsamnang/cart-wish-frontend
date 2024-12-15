@@ -12,27 +12,30 @@ const FeaturedProducts = () => {
           imageAlt="iphone 16 pro image"
           numRating={120}
           rating="5.0"
-          price="$1,854"
+          price={1854}
           image={iphone}
           link="/"
+          stock={1}
         />
         <ProductCard
           name="iPhone 16 Pro"
           imageAlt="iphone 16 pro image"
           numRating={120}
           rating="5.0"
-          price="$1,854"
+          price={1854}
           image={iphone}
           link="/"
+          stock={1}
         />
         <ProductCard
           name="iPhone 16 Pro"
           imageAlt="iphone 16 pro image"
           numRating={120}
           rating="5.0"
-          price="$1,854"
+          price={1854}
           image={iphone}
           link="/"
+          stock={1}
         />
       </div>
     </section>
