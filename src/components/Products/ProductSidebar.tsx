@@ -8,12 +8,7 @@ import {
 import useData, { Product } from "../../hooks/useData";
 
 const ProductSidebar = () => {
-  const { data: categories, errorMsg } = useData("/category", (res) => {
-    if (Array.isArray(res)) {
-      return res as Product[];
-    }
-    throw new Error("Invalid response structure");
-  });
+  const { data: categories, errorMsg } = useData<Product[]>("/category");
 
   return (
     <aside className="bg-white">

@@ -15,31 +15,18 @@ export interface Product {
   _id: string;
 }
 
-const useData = (
-  url: string,
-  dataExtractor: (response: unknown) => Product[] = (response: unknown) => {
-    // Default extractor assumes `response` is an object with `products`
-    if (
-      typeof response === "object" &&
-      response !== null &&
-      "products" in response
-    ) {
-      return (response as { products: Product[] }).products;
-    }
-    throw new Error("Invalid response structure");
-  }
-) => {
-  const [data, setData] = useState<Product[] | null>(null);
+const useData = <T>(url: string) => {
+  const [data, setData] = useState<T | null>(null);
   const [errorMsg, setErrorMsg] = useState("");
 
   useEffect(() => {
     async function fetchingData() {
       try {
         const res = await api_client.get(url);
-        const rawData = res.data;
+        const rawData: T = res.data;
+        console.log(rawData);
 
-        const extractedData = dataExtractor(rawData);
-        setData(extractedData);
+        setData(rawData);
       } catch (error) {
         if (error instanceof Error) {
           setErrorMsg(error.message);
@@ -51,7 +38,7 @@ const useData = (
     }
 
     fetchingData();
-  }, [url, dataExtractor]);
+  }, [url]);
 
   return { data, errorMsg };
 };

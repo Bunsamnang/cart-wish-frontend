@@ -1,9 +1,14 @@
 import ProductCard from "./ProductCard";
 import iphone from "../../assets/images/iphone-16-pro.webp";
 import useData from "../../hooks/useData";
+import { Product } from "./../../hooks/useData";
 
+interface ProductsResponse {
+  products: Product[];
+}
 const ProductList = () => {
-  const { data: products, errorMsg } = useData("/products");
+  const { data, errorMsg } = useData<ProductsResponse>("/products");
+  console.log(data);
 
   return (
     <section className="bg-[#f6f8fa] p-2">
@@ -25,8 +30,8 @@ const ProductList = () => {
         <p className="text-red-500 text-center">{errorMsg}</p>
       ) : (
         <div className="flex justify-evenly flex-wrap gap-10">
-          {products &&
-            products.map((product) => (
+          {data &&
+            data.products.map((product) => (
               <ProductCard
                 name={product.title}
                 imageAlt={`${product.title} image`}

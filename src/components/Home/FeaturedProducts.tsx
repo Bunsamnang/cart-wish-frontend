@@ -2,15 +2,8 @@ import useData, { Product } from "../../hooks/useData";
 import ProductCard from "../Products/ProductCard";
 
 const FeaturedProducts = () => {
-  const { data: featuredProducts, errorMsg } = useData(
-    "/products/featured",
-    (res) => {
-      if (Array.isArray(res)) {
-        return res as Product[];
-      }
-      throw new Error("Invalid response structure");
-    }
-  );
+  const { data: featuredProducts, errorMsg } =
+    useData<Product[]>("/products/featured");
 
   return (
     <section className="my-14">
