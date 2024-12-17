@@ -3,7 +3,7 @@ import ProductSidebar from "./ProductSidebar";
 
 const ProductPage = () => {
   return (
-    <section className="grid grid-cols-[1fr_4fr]">
+    <section className="grid grid-cols-1  md:grid-cols-[1fr_4fr]">
       <ProductSidebar />
 
       <ProductList />

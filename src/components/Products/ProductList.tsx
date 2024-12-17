@@ -2,13 +2,33 @@ import ProductCard from "./ProductCard";
 import useData from "../../hooks/useData";
 import { Product } from "./../../hooks/useData";
 import ProductCardSkeleton from "./ProductCardSkeleton";
+import { useSearchParams } from "react-router-dom";
+import Pagination from "../../common/PaginationList";
 
 interface ProductsResponse {
   products: Product[];
+  totalProducts: number;
 }
 const ProductList = () => {
-  const { data, errorMsg, isLoading } = useData<ProductsResponse>("/products");
+  const [search, setSearch] = useSearchParams();
+  const category = search.get("category") || "";
+  const page = parseInt(search.get("page") || "1");
+
+  const { data, errorMsg, isLoading } = useData<ProductsResponse>("/products", {
+    params: {
+      category,
+      page,
+    },
+  });
   console.log(data);
+
+  const handlePageChange = (pageNum: number) => {
+    setSearch((prev) => {
+      const newSearchParams = new URLSearchParams(prev);
+      newSearchParams.set("page", pageNum.toString());
+      return newSearchParams;
+    });
+  };
 
   // create number of skeletons based on num of response
   const skeletons = Array.from({ length: data?.products.length || 8 });
@@ -32,25 +52,35 @@ const ProductList = () => {
       {errorMsg ? (
         <p className="text-red-500 text-center">{errorMsg}</p>
       ) : (
-        <div className="grid gap-5 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4">
-          {/* checks if data is not null or undefined */}
+        <>
+          <div className="grid gap-5  max-md:place-items-center  md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4">
+            {/* checks if data is not null or undefined */}
 
-          {isLoading
-            ? skeletons.map((_, index) => <ProductCardSkeleton key={index} />)
-            : data?.products.map((product) => (
-                <ProductCard
-                  image={product.images[0]}
-                  imageAlt={product.title}
-                  link={product._id}
-                  name={product.title}
-                  numRating={product.reviews.counts}
-                  price={product.price}
-                  rating={product.reviews.rate.toFixed(1)}
-                  stock={product.stock}
-                  key={product._id}
-                />
-              ))}
-        </div>
+            {isLoading
+              ? skeletons.map((_, index) => <ProductCardSkeleton key={index} />)
+              : data?.products.map((product) => (
+                  <ProductCard
+                    image={product.images[0]}
+                    imageAlt={product.title}
+                    link={product._id}
+                    name={product.title}
+                    numRating={product.reviews.counts}
+                    price={product.price}
+                    rating={product.reviews.rate.toFixed(1)}
+                    stock={product.stock}
+                    key={product._id}
+                  />
+                ))}
+          </div>
+          <div className="flex items-center justify-center">
+            <Pagination
+              totalPost={data?.totalProducts || 0}
+              currentPage={page}
+              postPerPage={8}
+              onClick={handlePageChange}
+            />
+          </div>
+        </>
       )}
     </section>
   );
