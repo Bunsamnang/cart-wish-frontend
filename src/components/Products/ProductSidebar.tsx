@@ -12,7 +12,7 @@ const ProductSidebar = () => {
 
   return (
     <aside className="bg-white">
-      <h1 className="text-2xl font-semibold mt-2">Category</h1>
+      <h1 className="text-2xl font-semibold mt-2 ml-5">Category</h1>
       <Sidebar className="w-full bg-white !shadow-lg !rounded">
         <SidebarItems>
           {errorMsg ? (

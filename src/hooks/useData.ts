@@ -18,16 +18,20 @@ export interface Product {
 const useData = <T>(url: string) => {
   const [data, setData] = useState<T | null>(null);
   const [errorMsg, setErrorMsg] = useState("");
+  const [isLoading, setIsLoading] = useState(false);
 
   useEffect(() => {
     async function fetchingData() {
+      setIsLoading(true);
       try {
         const res = await api_client.get(url);
         const rawData: T = res.data;
         console.log(rawData);
 
         setData(rawData);
+        setIsLoading(false);
       } catch (error) {
+        setIsLoading(true);
         if (error instanceof Error) {
           setErrorMsg(error.message);
         } else {
@@ -40,7 +44,7 @@ const useData = <T>(url: string) => {
     fetchingData();
   }, [url]);
 
-  return { data, errorMsg };
+  return { data, errorMsg, isLoading };
 };
 
 export default useData;

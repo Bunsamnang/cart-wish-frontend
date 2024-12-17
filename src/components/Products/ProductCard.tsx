@@ -23,13 +23,13 @@ const ProductCard = ({
   stock,
 }: ProductCardProps) => {
   return (
-    <Card href={link} className="max-w-sm flex-1 ">
-      <div className="relative w-full h-64 overflow-hidden rounded-t-lg">
+    <Card href={`/products/${link}`} className="flex-1 max-w-sm">
+      <div className="relative overflow-hidden rounded-t-lg ">
         {/* Set fixed dimensions and use object-cover */}
         <img
           src={`http://localhost:5000/products/${image}`}
-          alt={imageAlt}
-          className="w-full h-full object-cover"
+          alt={`${imageAlt} image`}
+          className="w-full h-full object-contain aspect-[16/9]"
         />
       </div>
       <hr className="border-t border-slate-500  w-full " />
@@ -41,7 +41,7 @@ const ProductCard = ({
             <Star size={20} fill="white" /> {rating}
           </p>
 
-          <p className="text-slate-400">| ({numRating})</p>
+          <p className="text-slate-400 whitespace-nowrap">| ({numRating})</p>
         </div>
         {stock > 0 && (
           <button>

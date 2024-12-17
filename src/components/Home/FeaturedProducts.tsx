@@ -18,8 +18,8 @@ const FeaturedProducts = () => {
             featuredProducts.map((product) => (
               <ProductCard
                 image={product.images[0]}
-                imageAlt={`${product.title} image`}
-                link={`/products/${product._id}`}
+                imageAlt={product.title}
+                link={product._id}
                 name={product.title}
                 numRating={product.reviews.counts}
                 price={product.price}

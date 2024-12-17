@@ -1,14 +1,17 @@
 import ProductCard from "./ProductCard";
-import iphone from "../../assets/images/iphone-16-pro.webp";
 import useData from "../../hooks/useData";
 import { Product } from "./../../hooks/useData";
+import ProductCardSkeleton from "./ProductCardSkeleton";
 
 interface ProductsResponse {
   products: Product[];
 }
 const ProductList = () => {
-  const { data, errorMsg } = useData<ProductsResponse>("/products");
+  const { data, errorMsg, isLoading } = useData<ProductsResponse>("/products");
   console.log(data);
+
+  // create number of skeletons based on num of response
+  const skeletons = Array.from({ length: data?.products.length || 8 });
 
   return (
     <section className="bg-[#f6f8fa] p-2">
@@ -29,21 +32,24 @@ const ProductList = () => {
       {errorMsg ? (
         <p className="text-red-500 text-center">{errorMsg}</p>
       ) : (
-        <div className="flex justify-evenly flex-wrap gap-10">
-          {data &&
-            data.products.map((product) => (
-              <ProductCard
-                name={product.title}
-                imageAlt={`${product.title} image`}
-                numRating={product.reviews.counts}
-                rating={product.reviews.rate.toFixed(1)}
-                price={product.price}
-                image={product.images[0] || iphone}
-                link={`/products/${product._id}`}
-                key={product._id}
-                stock={product.stock}
-              />
-            ))}
+        <div className="grid gap-5 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4">
+          {/* checks if data is not null or undefined */}
+
+          {isLoading
+            ? skeletons.map((_, index) => <ProductCardSkeleton key={index} />)
+            : data?.products.map((product) => (
+                <ProductCard
+                  image={product.images[0]}
+                  imageAlt={product.title}
+                  link={product._id}
+                  name={product.title}
+                  numRating={product.reviews.counts}
+                  price={product.price}
+                  rating={product.reviews.rate.toFixed(1)}
+                  stock={product.stock}
+                  key={product._id}
+                />
+              ))}
         </div>
       )}
     </section>
