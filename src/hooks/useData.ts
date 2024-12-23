@@ -12,6 +12,7 @@ export interface Product {
     counts: number;
   };
   title: string;
+  description: string;
   _id: string;
 }
 
@@ -40,7 +41,6 @@ const useData = <T>(endpoint: string, customConfig: CustomConfig = {}) => {
       try {
         const res = await api_client.get(endpoint, customConfig);
         const rawData: T = res.data;
-        console.log(rawData);
 
         setData(rawData);
         setIsLoading(false);

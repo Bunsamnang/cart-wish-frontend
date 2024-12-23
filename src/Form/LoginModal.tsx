@@ -2,6 +2,9 @@ import { Modal, ModalBody, ModalFooter, ModalHeader } from "flowbite-react";
 import TextInputField from "./TextInputField";
 import { useForm } from "react-hook-form";
 import { LoginCredentials } from "./AuthModel";
+import { login } from "../components/services/userServices";
+import { useState } from "react";
+import { useAuth } from "../hooks/useAuth";
 
 interface LoginModalProps {
   openModal: boolean;
@@ -9,6 +12,9 @@ interface LoginModalProps {
 }
 
 const LoginModal = ({ onCloseModal, openModal }: LoginModalProps) => {
+  const [formError, setFormError] = useState("");
+  const { setIsLoggedIn } = useAuth();
+
   const {
     register,
     reset,
@@ -16,9 +22,27 @@ const LoginModal = ({ onCloseModal, openModal }: LoginModalProps) => {
     formState: { errors, isSubmitting },
   } = useForm<LoginCredentials>();
 
-  const onSubmit = (formData: LoginCredentials) => {
-    console.log(formData);
-    reset();
+  const onSubmit = async (formData: LoginCredentials) => {
+    console.log("Email sent to server:", formData.email);
+
+    try {
+      const user = await login(formData);
+
+      localStorage.setItem("token", user.data.token);
+      setIsLoggedIn(true);
+      reset();
+      onCloseModal();
+      // eslint-disable-next-line @typescript-eslint/no-explicit-any
+    } catch (error: any) {
+      if (error.response) {
+        // Backend responded with an error
+        console.error(error.response.data.message); // Log the actual backend message
+        setFormError(error.response.data.message); // Optionally show it to the user
+      } else {
+        // Handle other errors (e.g., network issues)
+        console.error("An unexpected error occurred:", error.message);
+      }
+    }
   };
 
   return (
@@ -27,7 +51,11 @@ const LoginModal = ({ onCloseModal, openModal }: LoginModalProps) => {
         <ModalHeader>Log in</ModalHeader>
 
         <ModalBody>
-          <form id="loginForm" onSubmit={handleSubmit(onSubmit)}>
+          <form
+            id="loginForm"
+            onSubmit={handleSubmit(onSubmit)}
+            className="space-y-3"
+          >
             <TextInputField
               register={register}
               placeholder=""
@@ -46,6 +74,11 @@ const LoginModal = ({ onCloseModal, openModal }: LoginModalProps) => {
               type="password"
               validationRules={{ required: "Password required" }}
             />
+            {formError && (
+              <div>
+                <em className="text-red-500 ">{formError}</em>
+              </div>
+            )}
           </form>
         </ModalBody>
 

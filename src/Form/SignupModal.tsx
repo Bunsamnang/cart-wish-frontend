@@ -4,6 +4,8 @@ import TextInputField from "./TextInputField";
 import { useForm } from "react-hook-form";
 import { SignupCredentials } from "./AuthModel";
 import { useState } from "react";
+import { signup } from "../components/services/userServices";
+import { useAuth } from "../hooks/useAuth";
 
 interface SignupModalProps {
   openModal: boolean;
@@ -11,21 +13,37 @@ interface SignupModalProps {
 }
 
 const SignupModal = ({ openModal, onCloseModal }: SignupModalProps) => {
+  const [profilePic, setProfilePic] = useState<File | null>(null);
+  const [formError, setFormError] = useState("");
+
+  const { setIsLoggedIn } = useAuth();
+  console.log(profilePic);
+
   const {
     register,
     reset,
     handleSubmit,
     formState: { errors, isSubmitting },
   } = useForm<SignupCredentials>();
-  const onSubmit = (formData: SignupCredentials) => {
-    console.log(formData);
+  const onSubmit = async (formData: SignupCredentials) => {
+    try {
+      console.log(formData.password); // This contains the value from the input with id="password"
 
-    reset();
+      // Use `profilePic ?? undefined` to ensure it's compatible with the `signup` function
+      const res = await signup(formData, profilePic ?? undefined);
+      localStorage.setItem("token", res.data.token);
+      setIsLoggedIn(true);
+
+      reset();
+      onCloseModal();
+      // eslint-disable-next-line @typescript-eslint/no-explicit-any
+    } catch (error: any) {
+      if (error.response && error.response.status === 400) {
+        setFormError(error.response.data.message);
+        console.error(error.response.data.message);
+      }
+    }
   };
-
-  const [profilePic, setProfilePic] = useState<File | null>(null);
-
-  console.log(profilePic);
 
   const passwordValidation = (value: string) => {
     if (!value) {
@@ -83,7 +101,7 @@ const SignupModal = ({ openModal, onCloseModal }: SignupModalProps) => {
           <div className="md:flex gap-2 md:mb-2">
             <div className="md:flex-1">
               <TextInputField
-                id="username"
+                id="name"
                 type="text"
                 errors={errors}
                 label="Name"
@@ -144,6 +162,11 @@ const SignupModal = ({ openModal, onCloseModal }: SignupModalProps) => {
             validationRules={{ required: "Required" }}
           />
         </form>
+        {formError && (
+          <div>
+            <em className="text-red-500">{formError}</em>
+          </div>
+        )}
       </ModalBody>
 
       <ModalFooter>

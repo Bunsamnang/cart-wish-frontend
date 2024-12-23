@@ -21,6 +21,8 @@ const ProductList = () => {
     },
   });
   console.log(data);
+  // create number of skeletons based on num of response
+  const skeletons = Array.from({ length: data?.products.length || 8 });
 
   const handlePageChange = (pageNum: number) => {
     setSearch((prev) => {
@@ -29,9 +31,6 @@ const ProductList = () => {
       return newSearchParams;
     });
   };
-
-  // create number of skeletons based on num of response
-  const skeletons = Array.from({ length: data?.products.length || 8 });
 
   return (
     <section className="bg-[#f6f8fa] p-2">

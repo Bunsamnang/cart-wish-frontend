@@ -3,38 +3,40 @@ import NavBar from "./components/NavBar";
 import LoginModal from "./Form/LoginModal";
 import SignupModal from "./Form/SignupModal";
 import Routing from "./components/Routing/Routing";
-import { useTotal } from "./hooks/useTotal";
+import { TotalProvider } from "./Contexts/TotalContext";
+import { AuthProvider } from "./Contexts/AuthContext";
 
 const App = () => {
   const [openLoginModal, setOpenLoginModal] = useState(false);
   const [openSignupModal, setOpenSignupModal] = useState(false);
 
-  const { total } = useTotal();
-  console.log(total);
-
   return (
     <div className="app grid grid-rows-[100px_auto] max-md:grid-rows-[auto_auto]">
-      <NavBar
-        onOpenLoginModal={() => setOpenLoginModal(true)}
-        onOpenSignupModal={() => setOpenSignupModal(true)}
-      />
-      <main>
-        <Routing />
-      </main>
-
-      {openLoginModal && (
-        <LoginModal
-          openModal={openLoginModal}
-          onCloseModal={() => setOpenLoginModal(false)}
+      <AuthProvider>
+        <NavBar
+          onOpenLoginModal={() => setOpenLoginModal(true)}
+          onOpenSignupModal={() => setOpenSignupModal(true)}
         />
-      )}
+        <main>
+          <TotalProvider>
+            <Routing />
+          </TotalProvider>
+        </main>
 
-      {openSignupModal && (
-        <SignupModal
-          openModal={openSignupModal}
-          onCloseModal={() => setOpenSignupModal(false)}
-        />
-      )}
+        {openLoginModal && (
+          <LoginModal
+            openModal={openLoginModal}
+            onCloseModal={() => setOpenLoginModal(false)}
+          />
+        )}
+
+        {openSignupModal && (
+          <SignupModal
+            openModal={openSignupModal}
+            onCloseModal={() => setOpenSignupModal(false)}
+          />
+        )}
+      </AuthProvider>
     </div>
   );
 };

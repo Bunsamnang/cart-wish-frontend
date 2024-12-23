@@ -2,6 +2,7 @@ import { AlignJustify } from "lucide-react";
 import { useEffect, useState } from "react";
 import Link from "../common/Link";
 import { NavLink } from "react-router-dom";
+import { useAuth } from "../hooks/useAuth";
 
 interface NavBarProps {
   onOpenLoginModal: () => void;
@@ -10,6 +11,7 @@ interface NavBarProps {
 
 const NavBar = ({ onOpenLoginModal, onOpenSignupModal }: NavBarProps) => {
   const [isExpanded, setIsExpanded] = useState(false);
+  const { isLoggedIn, setIsLoggedIn } = useAuth();
 
   console.log(isExpanded);
   // Handle resetting isExpanded when the screen width is >= 1024px
@@ -28,6 +30,11 @@ const NavBar = ({ onOpenLoginModal, onOpenSignupModal }: NavBarProps) => {
       window.removeEventListener("resize", handleResize);
     };
   }, [isExpanded]);
+
+  const handleLogout = () => {
+    localStorage.removeItem("token");
+    setIsLoggedIn(false);
+  };
 
   return (
     <nav
@@ -74,20 +81,31 @@ const NavBar = ({ onOpenLoginModal, onOpenSignupModal }: NavBarProps) => {
           <Link link="/cart" title={`Cart(${0})`} />
         </li>
 
-        <button
-          className={`inline-block mr-4 px-4 py-2 bg-black text-white rounded-md border border-white transition duration-300 ease-in-out hover:bg-white hover:text-black hover:border-black
+        {isLoggedIn ? (
+          <button
+            className="bg-red-600 text-white px-4 py-2 rounded-md hover:bg-red-700 transition duration-300 ease-in-out"
+            onClick={() => handleLogout()}
+          >
+            Log out
+          </button>
+        ) : (
+          <>
+            <button
+              className={`inline-block mr-4 px-4 py-2 bg-black text-white rounded-md border border-white transition duration-300 ease-in-out hover:bg-white hover:text-black hover:border-black
             ${isExpanded ? "ml-4" : ""}
           `}
-          onClick={onOpenLoginModal}
-        >
-          Log in
-        </button>
-        <button
-          className="inline-block mr-1 px-4 py-2 bg-white text-black rounded-md border border-black transition duration-300 ease-in-out hover:bg-black hover:text-white hover:border-white"
-          onClick={onOpenSignupModal}
-        >
-          Sign up
-        </button>
+              onClick={onOpenLoginModal}
+            >
+              Log in
+            </button>
+            <button
+              className="inline-block mr-1 px-4 py-2 bg-white text-black rounded-md border border-black transition duration-300 ease-in-out hover:bg-black hover:text-white hover:border-white"
+              onClick={onOpenSignupModal}
+            >
+              Sign up
+            </button>
+          </>
+        )}
       </ul>
     </nav>
 

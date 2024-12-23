@@ -1,65 +1,82 @@
 import { useState } from "react";
-
-const product = {
-  id: 1,
-  title: "Product Title",
-  description:
-    "Lorem ipsum dolor sit amet, consectetur adipisicing elit. Maxime aliquid rerum a? Fugiat soluta facilis deleniti voluptatibus ab architecto dolores a, vero, beatae veniam error doloribus quia laudantium? Error fuga consequuntur quia accusantium? Consequatur modi laboriosam saepe culpa, ab atque.",
-  price: 9.99,
-  images: [
-    "https://via.placeholder.com/500x500?text=Product+Image+1",
-    "https://via.placeholder.com/500x500?text=Product+Image+2",
-    "https://via.placeholder.com/500x500?text=Product+Image+3",
-    "https://via.placeholder.com/500x500?text=Product+Image+4",
-  ],
-};
+import useData, { Product } from "../../hooks/useData";
+import { useParams } from "react-router-dom";
+import { LoaderCircle } from "lucide-react";
+import QuantityInput from "./QuantityInput";
 
 const SingleProductPage = () => {
+  const { id } = useParams();
+
+  const {
+    data: product,
+    errorMsg,
+    isLoading,
+  } = useData<Product>(`/products/${id}`);
+  console.log(product);
+
   const [selectedImage, setSelectedImage] = useState(0);
-  const { title, description, price, images } = product;
+  const [quantity, setQuantity] = useState(1);
+
   return (
-    <section className="grid grid-cols-[2fr_1.6fr] place-items-center mt-5">
-      <div className="flex gap-6">
-        <div className="flex flex-col justify-center gap-4 single-product-thumbnail">
-          {images.map((image, index) => (
-            <img
-              src={image}
-              key={index}
-              className={`w-20 h-20 rounded-md cursor-pointer ${
-                selectedImage === index ? "scale-110" : ""
-              } transition-all 0.3s ease-in`}
-              onClick={() => setSelectedImage(index)}
-            />
-          ))}
-        </div>
-        <img
-          src={images[selectedImage]}
-          alt={title}
-          className="rounded-md single-product-display "
-        />
-      </div>
-      <div className="single-product-details flex flex-col ">
-        <h1 className="text-2xl font-bold mb-2">{title}</h1>
-        <p>{description}</p>
-        <p className="font-semibold mt-2">${price}</p>
-        <h2 className="text-xl font-semibold my-5">Quantity</h2>
-        <div className="flex items-center ">
-          <button
-            disabled
-            className="bg-red-600 w-8 h-8 text-white text-2xl rounded-full hover:bg-red-700"
-          >
-            -
-          </button>
-          <p className="mx-8">1</p>
-          <button className="bg-green-600 w-8 h-8 text-white text-2xl rounded-full hover:bg-green-700 ">
-            +
-          </button>
-        </div>
-        <button className="text-left mt-4 px-5 py-2 rounded-full bg-violet-500 text-white self-start hover:bg-violet-600">
-          Add to Cart
-        </button>
-      </div>
-    </section>
+    <>
+      {errorMsg ? (
+        <p className="text-red-500 text-center">{errorMsg}</p>
+      ) : (
+        <>
+          {isLoading ? (
+            <div className="flex justify-center items-center h-screen">
+              <LoaderCircle className="animate-spin text-slate-800 w-10 h-10 " />
+            </div>
+          ) : (
+            product && (
+              <>
+                <section className="grid grid-cols-[2fr_1.8fr] place-items-center mt-10">
+                  <div className="flex gap-10 justify-center">
+                    <div className="flex flex-col justify-center gap-4 single-product-thumbnail">
+                      {product?.images.map((image, index) => (
+                        <img
+                          src={`http://localhost:5000/products/${image}`}
+                          key={index}
+                          className={`w-20 h-20 rounded-md shadow cursor-pointer ${
+                            selectedImage === index ? "scale-110" : ""
+                          } transition-all 0.3s ease-in`}
+                          onClick={() => setSelectedImage(index)}
+                        />
+                      ))}
+                    </div>
+                    <img
+                      src={`http://localhost:5000/products/${product?.images[selectedImage]}`}
+                      alt={product?.title}
+                      className="rounded-md single-product-display w-[40%] shadow aspect-square object-contain"
+                    />
+                  </div>
+                  <div className="single-product-details flex flex-col ">
+                    <h1 className="text-2xl font-bold mb-2">
+                      {product?.title}
+                    </h1>
+                    <p>{product?.description}</p>
+                    <p className="font-semibold mt-2 text-xl">
+                      ${product?.price}
+                    </p>
+                    <h2 className="text-xl font-semibold my-5">Quantity</h2>
+                    <div className="flex items-center gap-5">
+                      <QuantityInput
+                        quantity={quantity}
+                        setQuantity={setQuantity}
+                        stock={product.stock}
+                      />
+                    </div>
+                    <button className="text-left mt-4 px-5 py-2 rounded-full bg-violet-500 text-white self-start hover:bg-violet-600">
+                      Add to Cart
+                    </button>
+                  </div>
+                </section>
+              </>
+            )
+          )}
+        </>
+      )}
+    </>
   );
 };
 
