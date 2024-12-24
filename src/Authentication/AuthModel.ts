@@ -10,3 +10,12 @@ export interface SignupCredentials {
   confirmPassword: string;
   deliveryAddress: string;
 }
+
+export interface User {
+  exp: number;
+  _id: string;
+  name: string;
+  email: string;
+  profilePic: string;
+  isAdmin: boolean;
+}

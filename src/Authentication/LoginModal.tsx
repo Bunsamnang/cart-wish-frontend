@@ -1,10 +1,11 @@
 import { Modal, ModalBody, ModalFooter, ModalHeader } from "flowbite-react";
 import TextInputField from "./TextInputField";
 import { useForm } from "react-hook-form";
-import { LoginCredentials } from "./AuthModel";
+import { LoginCredentials, User } from "./AuthModel";
 import { login } from "../components/services/userServices";
 import { useState } from "react";
 import { useAuth } from "../hooks/useAuth";
+import { jwtDecode } from "jwt-decode";
 
 interface LoginModalProps {
   openModal: boolean;
@@ -13,8 +14,7 @@ interface LoginModalProps {
 
 const LoginModal = ({ onCloseModal, openModal }: LoginModalProps) => {
   const [formError, setFormError] = useState("");
-  const { setIsLoggedIn } = useAuth();
-
+  const { setUser } = useAuth();
   const {
     register,
     reset,
@@ -26,10 +26,11 @@ const LoginModal = ({ onCloseModal, openModal }: LoginModalProps) => {
     console.log("Email sent to server:", formData.email);
 
     try {
-      const user = await login(formData);
+      const res = await login(formData);
 
-      localStorage.setItem("token", user.data.token);
-      setIsLoggedIn(true);
+      // update state of user to logged in
+      setUser(jwtDecode<User>(res.token));
+
       reset();
       onCloseModal();
       // eslint-disable-next-line @typescript-eslint/no-explicit-any

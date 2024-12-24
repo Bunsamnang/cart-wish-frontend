@@ -2,10 +2,11 @@ import { Modal, ModalBody, ModalFooter, ModalHeader } from "flowbite-react";
 import { User } from "lucide-react";
 import TextInputField from "./TextInputField";
 import { useForm } from "react-hook-form";
-import { SignupCredentials } from "./AuthModel";
+import { SignupCredentials, User as user } from "./AuthModel";
 import { useState } from "react";
 import { signup } from "../components/services/userServices";
 import { useAuth } from "../hooks/useAuth";
+import { jwtDecode } from "jwt-decode";
 
 interface SignupModalProps {
   openModal: boolean;
@@ -16,7 +17,8 @@ const SignupModal = ({ openModal, onCloseModal }: SignupModalProps) => {
   const [profilePic, setProfilePic] = useState<File | null>(null);
   const [formError, setFormError] = useState("");
 
-  const { setIsLoggedIn } = useAuth();
+  const { setUser } = useAuth();
+
   console.log(profilePic);
 
   const {
@@ -31,9 +33,9 @@ const SignupModal = ({ openModal, onCloseModal }: SignupModalProps) => {
 
       // Use `profilePic ?? undefined` to ensure it's compatible with the `signup` function
       const res = await signup(formData, profilePic ?? undefined);
-      localStorage.setItem("token", res.data.token);
-      setIsLoggedIn(true);
 
+      // update state of user to signed in
+      setUser(jwtDecode<user>(res.token));
       reset();
       onCloseModal();
       // eslint-disable-next-line @typescript-eslint/no-explicit-any

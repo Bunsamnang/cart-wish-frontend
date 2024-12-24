@@ -1,7 +1,7 @@
 import { useState } from "react";
 import NavBar from "./components/NavBar";
-import LoginModal from "./Form/LoginModal";
-import SignupModal from "./Form/SignupModal";
+import LoginModal from "./Authentication/LoginModal";
+import SignupModal from "./Authentication/SignupModal";
 import Routing from "./components/Routing/Routing";
 import { TotalProvider } from "./Contexts/TotalContext";
 import { AuthProvider } from "./Contexts/AuthContext";
@@ -11,8 +11,8 @@ const App = () => {
   const [openSignupModal, setOpenSignupModal] = useState(false);
 
   return (
-    <div className="app grid grid-rows-[100px_auto] max-md:grid-rows-[auto_auto]">
-      <AuthProvider>
+    <AuthProvider>
+      <div className="app grid grid-rows-[100px_auto] max-md:grid-rows-[auto_auto]">
         <NavBar
           onOpenLoginModal={() => setOpenLoginModal(true)}
           onOpenSignupModal={() => setOpenSignupModal(true)}
@@ -36,8 +36,8 @@ const App = () => {
             onCloseModal={() => setOpenSignupModal(false)}
           />
         )}
-      </AuthProvider>
-    </div>
+      </div>
+    </AuthProvider>
   );
 };
 

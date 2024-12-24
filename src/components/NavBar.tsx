@@ -11,7 +11,9 @@ interface NavBarProps {
 
 const NavBar = ({ onOpenLoginModal, onOpenSignupModal }: NavBarProps) => {
   const [isExpanded, setIsExpanded] = useState(false);
-  const { isLoggedIn, setIsLoggedIn } = useAuth();
+
+  // if user is logged in
+  const { user, setUser } = useAuth();
 
   console.log(isExpanded);
   // Handle resetting isExpanded when the screen width is >= 1024px
@@ -32,8 +34,8 @@ const NavBar = ({ onOpenLoginModal, onOpenSignupModal }: NavBarProps) => {
   }, [isExpanded]);
 
   const handleLogout = () => {
+    setUser(null);
     localStorage.removeItem("token");
-    setIsLoggedIn(false);
   };
 
   return (
@@ -70,24 +72,26 @@ const NavBar = ({ onOpenLoginModal, onOpenSignupModal }: NavBarProps) => {
         <li className="py-2 px-4 hover:text-white transition-colors duration-300 ease-in-out">
           <Link link="/products" title="Products" />
         </li>
-        <li className="py-2 px-4 hover:text-white transition-colors duration-300 ease-in-out">
-          <Link link="/myorder" title="MyOrder" />
-        </li>
-        <li
-          className={`py-2 px-4 mr-4  hover:text-white transition-colors duration-300 ease-in-out ${
-            isExpanded ? "mb-4" : ""
-          }`}
-        >
-          <Link link="/cart" title={`Cart(${0})`} />
-        </li>
 
-        {isLoggedIn ? (
-          <button
-            className="bg-red-600 text-white px-4 py-2 rounded-md hover:bg-red-700 transition duration-300 ease-in-out"
-            onClick={() => handleLogout()}
-          >
-            Log out
-          </button>
+        {user ? (
+          <>
+            <li className="py-2 px-4 hover:text-white transition-colors duration-300 ease-in-out">
+              <Link link="/myorder" title="MyOrder" />
+            </li>
+            <li
+              className={`py-2 px-4 mr-4  hover:text-white transition-colors duration-300 ease-in-out ${
+                isExpanded ? "mb-4" : ""
+              }`}
+            >
+              <Link link="/cart" title={`Cart(${0})`} />
+            </li>
+            <button
+              className="bg-red-600 text-white px-4 py-2 rounded-md hover:bg-red-700 transition duration-300 ease-in-out"
+              onClick={() => handleLogout()}
+            >
+              Log out
+            </button>
+          </>
         ) : (
           <>
             <button
