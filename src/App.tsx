@@ -3,8 +3,8 @@ import NavBar from "./components/NavBar";
 import LoginModal from "./Authentication/LoginModal";
 import SignupModal from "./Authentication/SignupModal";
 import Routing from "./components/Routing/Routing";
-import { TotalProvider } from "./Contexts/TotalContext";
 import { AuthProvider } from "./Contexts/AuthContext";
+import { CartProvider } from "./Contexts/CartContext";
 
 const App = () => {
   const [openLoginModal, setOpenLoginModal] = useState(false);
@@ -12,31 +12,32 @@ const App = () => {
 
   return (
     <AuthProvider>
-      <div className="app grid grid-rows-[100px_auto] max-md:grid-rows-[auto_auto]">
-        <NavBar
-          onOpenLoginModal={() => setOpenLoginModal(true)}
-          onOpenSignupModal={() => setOpenSignupModal(true)}
-        />
-        <main>
-          <TotalProvider>
+      <CartProvider>
+        <div className="app grid grid-rows-[100px_auto] max-md:grid-rows-[auto_auto]">
+          <NavBar
+            onOpenLoginModal={() => setOpenLoginModal(true)}
+            onOpenSignupModal={() => setOpenSignupModal(true)}
+          />
+
+          <main>
             <Routing />
-          </TotalProvider>
-        </main>
+          </main>
 
-        {openLoginModal && (
-          <LoginModal
-            openModal={openLoginModal}
-            onCloseModal={() => setOpenLoginModal(false)}
-          />
-        )}
+          {openLoginModal && (
+            <LoginModal
+              openModal={openLoginModal}
+              onCloseModal={() => setOpenLoginModal(false)}
+            />
+          )}
 
-        {openSignupModal && (
-          <SignupModal
-            openModal={openSignupModal}
-            onCloseModal={() => setOpenSignupModal(false)}
-          />
-        )}
-      </div>
+          {openSignupModal && (
+            <SignupModal
+              openModal={openSignupModal}
+              onCloseModal={() => setOpenSignupModal(false)}
+            />
+          )}
+        </div>
+      </CartProvider>
     </AuthProvider>
   );
 };

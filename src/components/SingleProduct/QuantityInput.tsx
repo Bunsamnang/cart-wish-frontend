@@ -20,7 +20,7 @@ const QuantityInput = ({
       >
         -
       </button>
-      <p className="mx-5 w-5">{quantity}</p>
+      <p className="mx-5 w-5 text-center">{quantity}</p>
       <button
         disabled={quantity === stock}
         className={`bg-green-600 w-8 h-8 text-white text-2xl rounded-full ${

@@ -3,11 +3,9 @@ import HomePage from "../Home/HomePage";
 import CartPage from "../../Cart/CartPage";
 import ProductPage from "../Products/ProductPage";
 import MyOrderPage from "../../MyOrder/MyOrderPage";
-import { useTotal } from "../../hooks/useTotal";
 import SingleProductPage from "../SingleProduct/SingleProductPage";
 
 const Routing = () => {
-  const { total } = useTotal();
   return (
     <Routes>
       <Route path="/" element={<HomePage />} />
@@ -23,7 +21,7 @@ const Routing = () => {
               {
                 products: ["iPhone 16", "Airpods", "Headphones"],
                 status: "shipped",
-                total: total,
+                total: 12,
               },
             ]}
           />

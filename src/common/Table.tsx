@@ -1,23 +1,15 @@
 import { Trash2 } from "lucide-react";
 import { Cart } from "../Cart/Cart";
-import { useTotal } from "../hooks/useTotal";
-import { useEffect } from "react";
 
 interface TableProps {
   carts: Cart[];
   headings: string[];
 }
 const Table = ({ carts, headings }: TableProps) => {
-  const { setTotal } = useTotal();
-
   const totalAmount = carts.reduce(
-    (sum, item) => sum + item.price * item.quantity,
+    (sum, item) => sum + item.product.price * item.quantity,
     0
   );
-
-  useEffect(() => {
-    setTotal(totalAmount + 5); // Update the total only if used in CartPage
-  }, [totalAmount, setTotal]);
 
   return (
     <>
@@ -38,8 +30,8 @@ const Table = ({ carts, headings }: TableProps) => {
               className={`${(index + 1) % 2 === 0 ? "bg-gray-300" : ""}`}
               key={index}
             >
-              <td className="px-3 py-2">{cart.item}</td>
-              <td className="px-3 py-2">${cart.price}</td>
+              <td className="px-3 py-2">{cart.product.title}</td>
+              <td className="px-3 py-2">${cart.product.price}</td>
               <td className="flex justify-center items-center px-3 py-2">
                 <button className="bg-red-600 w-8 h-8 text-white text-2xl rounded-full hover:bg-red-700">
                   -
@@ -49,7 +41,9 @@ const Table = ({ carts, headings }: TableProps) => {
                   +
                 </button>
               </td>
-              <td className="px-3 py-2">${cart.price * cart.quantity}</td>
+              <td className="px-3 py-2">
+                ${cart.product.price * cart.quantity}
+              </td>
               <td className="px-3 py-2 inline-flex justify-center items-center cursor-pointer">
                 <Trash2 className="text-red-500 hover:filter hover:drop-shadow-[0_4px_10px_rgba(255,0,0,0.7)] duration-300 ease-in transition-all" />
               </td>

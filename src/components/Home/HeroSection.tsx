@@ -1,5 +1,3 @@
-import { Button } from "flowbite-react";
-
 interface HeroSectionProps {
   title: string;
   subTitle: string;
@@ -13,12 +11,11 @@ const HeroSection = ({ title, subTitle, link, image }: HeroSectionProps) => {
       <div className="flex flex-col gap-7 h-full justify-center items-center text-center">
         <h1 className="text-2xl font-semibold max-sm:text-xl">{title}</h1>
         <p className="text-lg max-sm:text-sm">{subTitle}</p>
-        <Button
-          href={link}
-          className=" bg-white rounded-full border-white focus:!ring-transparent px-8  py-1 border text-black hover:!bg-black hover:text-white transition-all duration-150 ease-in-out "
-        >
-          Buy Now
-        </Button>
+        <a href={link}>
+          <button className=" bg-white rounded-full border-white  px-8  py-2 border text-black hover:bg-black hover:text-white transition-all duration-150 ease-in-out ">
+            Buy Now
+          </button>
+        </a>
       </div>
       <div className="">
         <img

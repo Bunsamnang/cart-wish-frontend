@@ -1,8 +1,10 @@
 import Table from "../common/Table";
 import { useAuth } from "../hooks/useAuth";
+import { useCart } from "../hooks/useCart";
 
 const CartPage = () => {
   const { user } = useAuth();
+  const { cart } = useCart();
 
   return (
     <section className="cart-page flex flex-col items-center mt-5">
@@ -29,25 +31,7 @@ const CartPage = () => {
 
       <Table
         headings={["Item", "Price", "Quantity", "Total", "Remove"]}
-        carts={[
-          {
-            item: "iPhone 16",
-            price: 999,
-            quantity: 1,
-          },
-
-          {
-            item: "Airpods",
-            price: 129,
-
-            quantity: 2,
-          },
-          {
-            item: "Headphones",
-            price: 40,
-            quantity: 1,
-          },
-        ]}
+        carts={cart}
       />
     </section>
   );

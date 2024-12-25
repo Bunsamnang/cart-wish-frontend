@@ -1,5 +1,6 @@
+import { Product } from "../hooks/useData";
+
 export interface Cart {
-  price: number;
-  item: string;
+  product: Product;
   quantity: number;
 }

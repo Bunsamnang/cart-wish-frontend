@@ -3,6 +3,7 @@ import { useEffect, useState } from "react";
 import Link from "../common/Link";
 import { NavLink } from "react-router-dom";
 import { useAuth } from "../hooks/useAuth";
+import { useCart } from "../hooks/useCart";
 
 interface NavBarProps {
   onOpenLoginModal: () => void;
@@ -10,10 +11,12 @@ interface NavBarProps {
 }
 
 const NavBar = ({ onOpenLoginModal, onOpenSignupModal }: NavBarProps) => {
-  const [isExpanded, setIsExpanded] = useState(false);
-
   // if user is logged in
   const { user, setUser } = useAuth();
+
+  const { cart } = useCart();
+
+  const [isExpanded, setIsExpanded] = useState(false);
 
   console.log(isExpanded);
   // Handle resetting isExpanded when the screen width is >= 1024px
@@ -83,10 +86,12 @@ const NavBar = ({ onOpenLoginModal, onOpenSignupModal }: NavBarProps) => {
                 isExpanded ? "mb-4" : ""
               }`}
             >
-              <Link link="/cart" title={`Cart(${0})`} />
+              <Link link="/cart" title={`Cart(${cart.length})`} />
             </li>
             <button
-              className="bg-red-600 text-white px-4 py-2 rounded-md hover:bg-red-700 transition duration-300 ease-in-out"
+              className={`bg-red-600 text-white px-4 py-2 rounded-md hover:bg-red-700 transition duration-300 ease-in-out
+                ${isExpanded ? "ml-4" : ""}
+                `}
               onClick={() => handleLogout()}
             >
               Log out
@@ -112,44 +117,6 @@ const NavBar = ({ onOpenLoginModal, onOpenSignupModal }: NavBarProps) => {
         )}
       </ul>
     </nav>
-
-    // <Navbar className="p-5 max-sm:p-1 max-sm:mt-2 flex items-center ">
-    //   <NavbarBrand>
-    //     <span className="font-semibold whitespace-nowrap self-center text-xl  dark:text-white mr-3">
-    //       Cart Wish
-    //     </span>
-    //     <form className="flex items-center gap-1 ">
-    //       <TextInput
-    //         className="flex-1  max-sm:w-48 max-sm:text-sm"
-    //         placeholder="Search Products"
-    //       />
-    //       <Button type="submit" className="max-sm:!text-sm">
-    //         Search
-    //       </Button>
-    //     </form>
-    //   </NavbarBrand>
-
-    //   <NavbarToggle />
-
-    //   <NavbarCollapse>
-    //     <NavbarLink href="/home" className="text-lg">
-    //       Home
-    //     </NavbarLink>
-    //     <NavbarLink href="/products" className="text-lg">
-    //       Products
-    //     </NavbarLink>
-
-    //     <NavbarLink href="/myorders" className="text-lg">
-    //       My Orders
-    //     </NavbarLink>
-
-    //     <NavbarLink href="/cart" className="text-lg flex">
-    //       Cart <p className="flex justify-center items-center">(0)</p>
-    //     </NavbarLink>
-    //     <Button className="max-md:mb-2">Sign up</Button>
-    //     <Button outline>Log in</Button>
-    //   </NavbarCollapse>
-    // </Navbar>
   );
 };
 
