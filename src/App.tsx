@@ -5,6 +5,10 @@ import SignupModal from "./Authentication/SignupModal";
 import Routing from "./components/Routing/Routing";
 import { AuthProvider } from "./Contexts/AuthContext";
 import { CartProvider } from "./Contexts/CartContext";
+import setAuthToken from "./utils/setAuthToken";
+import { getJwt } from "./components/services/userServices";
+
+setAuthToken(getJwt());
 
 const App = () => {
   const [openLoginModal, setOpenLoginModal] = useState(false);

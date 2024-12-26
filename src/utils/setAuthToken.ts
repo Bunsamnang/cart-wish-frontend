@@ -1,4 +1,4 @@
-import api_client from "../../utils/api_client";
+import api_client from "./api_client";
 
 const setAuthToken = (token: string) => {
   if (token) {
