@@ -7,33 +7,32 @@ const CartPage = () => {
   const { cart } = useCart();
 
   return (
-    <section className="cart-page flex flex-col items-center mt-5">
-      <div className="user_details flex items-center gap-4">
-        <img
-          src={`http://localhost:5000/profile/${user?.profilePic}`}
-          alt="profile picture"
-          className="w-16 h-16 rounded-full"
-        />
-        <div>
-          {user ? (
-            <>
+    <>
+      {user ? (
+        <section className="cart-page flex flex-col items-center mt-5">
+          <div className="user_details flex items-center gap-4">
+            <img
+              src={`http://localhost:5000/profile/${user?.profilePic}`}
+              alt="profile picture"
+              className="w-16 h-16 rounded-full"
+            />
+            <div>
               <p>Name: {user.name}</p>
               <p>Email: {user.email}</p>
-            </>
-          ) : (
-            <>
-              <p>Name: Code Bless you</p>
-              <p>Email: code1@gmail.com</p>
-            </>
-          )}
-        </div>
-      </div>
+            </div>
+          </div>
 
-      <Table
-        headings={["Item", "Price", "Quantity", "Total", "Remove"]}
-        carts={cart}
-      />
-    </section>
+          <Table
+            headings={["Item", "Price", "Quantity", "Total", "Remove"]}
+            carts={cart}
+          />
+        </section>
+      ) : (
+        <p className="text-red-500 text-center text-xl mt-3">
+          Token expired, please log in again
+        </p>
+      )}
+    </>
   );
 };
 

@@ -29,8 +29,6 @@ const SignupModal = ({ openModal, onCloseModal }: SignupModalProps) => {
   } = useForm<SignupCredentials>();
   const onSubmit = async (formData: SignupCredentials) => {
     try {
-      console.log(formData.password); // This contains the value from the input with id="password"
-
       // Use `profilePic ?? undefined` to ensure it's compatible with the `signup` function
       const res = await signup(formData, profilePic ?? undefined);
 

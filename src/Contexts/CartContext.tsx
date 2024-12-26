@@ -17,20 +17,19 @@ export const CartProvider = ({ children }: { children: ReactNode }) => {
   });
 
   const addToCart = (product: Product, quantity: number) => {
-    // Check if product already exists in cart, then update quantity
-    setCart((prevCart) => {
-      const updatedCart = prevCart.some(
-        (item) => item.product.name === product.name
-      )
-        ? prevCart.map((item) =>
-            item.product.name === product.name
-              ? { ...item, quantity: item.quantity + quantity }
-              : item
-          )
-        : [...prevCart, { product, quantity }];
+    const updatedCart = [...cart];
+    const productIndex = updatedCart.findIndex(
+      (item) => item.product._id === product._id
+    );
+    if (productIndex === -1) {
+      updatedCart.push({ product, quantity });
+    } else {
+      // Check if product already exists in cart, then update quantity
 
-      return updatedCart;
-    });
+      updatedCart[productIndex].quantity += quantity;
+    }
+
+    setCart(updatedCart);
   };
   useEffect(() => {
     localStorage.setItem("cart", JSON.stringify(cart));

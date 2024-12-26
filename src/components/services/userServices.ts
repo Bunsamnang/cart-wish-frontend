@@ -32,3 +32,7 @@ export async function login(user: LoginCredentials) {
   localStorage.setItem(tokenName, data.token);
   return data;
 }
+
+export function getJwt() {
+  return localStorage.getItem(tokenName) || "";
+}

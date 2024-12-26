@@ -23,8 +23,6 @@ const LoginModal = ({ onCloseModal, openModal }: LoginModalProps) => {
   } = useForm<LoginCredentials>();
 
   const onSubmit = async (formData: LoginCredentials) => {
-    console.log("Email sent to server:", formData.email);
-
     try {
       const res = await login(formData);
 

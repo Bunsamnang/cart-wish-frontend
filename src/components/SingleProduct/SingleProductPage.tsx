@@ -20,6 +20,8 @@ const SingleProductPage = () => {
 
   const { addToCart, cart } = useCart();
 
+  console.log(product);
+
   console.log(cart);
 
   return (

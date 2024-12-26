@@ -1,6 +1,7 @@
 import { createContext, ReactNode, useEffect, useState } from "react";
 import { User } from "../Authentication/AuthModel";
 import { jwtDecode } from "jwt-decode";
+import { getJwt } from "../components/services/userServices";
 
 interface AuthContextType {
   user: User | null;
@@ -14,7 +15,7 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
 
   useEffect(() => {
     try {
-      const jwt = localStorage.getItem("token") || "";
+      const jwt = getJwt() || "";
       // it returns an object, so make an interface of those properties
       const jwtUser = jwtDecode<User>(jwt);
 
