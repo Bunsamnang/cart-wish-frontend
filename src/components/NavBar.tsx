@@ -4,6 +4,7 @@ import Link from "../common/Link";
 import { NavLink } from "react-router-dom";
 import { useAuth } from "../hooks/useAuth";
 import { useCart } from "../hooks/useCart";
+import setAuthToken from "../utils/setAuthToken";
 
 interface NavBarProps {
   onOpenLoginModal: () => void;
@@ -14,7 +15,7 @@ const NavBar = ({ onOpenLoginModal, onOpenSignupModal }: NavBarProps) => {
   // if user is logged in
   const { user, setUser } = useAuth();
 
-  const { cart } = useCart();
+  const { cart, setCart } = useCart();
 
   const [isExpanded, setIsExpanded] = useState(false);
 
@@ -38,7 +39,9 @@ const NavBar = ({ onOpenLoginModal, onOpenSignupModal }: NavBarProps) => {
 
   const handleLogout = () => {
     setUser(null);
+    setCart([]);
     localStorage.removeItem("token");
+    setAuthToken("");
   };
 
   return (

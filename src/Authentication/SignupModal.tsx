@@ -7,6 +7,7 @@ import { useState } from "react";
 import { signup } from "../components/services/userServices";
 import { useAuth } from "../hooks/useAuth";
 import { jwtDecode } from "jwt-decode";
+import setAuthToken from "../utils/setAuthToken";
 
 interface SignupModalProps {
   openModal: boolean;
@@ -34,6 +35,8 @@ const SignupModal = ({ openModal, onCloseModal }: SignupModalProps) => {
 
       // update state of user to signed in
       setUser(jwtDecode<user>(res.token));
+      setAuthToken(res.token);
+
       reset();
       onCloseModal();
       // eslint-disable-next-line @typescript-eslint/no-explicit-any

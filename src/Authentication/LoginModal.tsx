@@ -6,6 +6,7 @@ import { login } from "../components/services/userServices";
 import { useState } from "react";
 import { useAuth } from "../hooks/useAuth";
 import { jwtDecode } from "jwt-decode";
+import setAuthToken from "../utils/setAuthToken";
 
 interface LoginModalProps {
   openModal: boolean;
@@ -28,6 +29,7 @@ const LoginModal = ({ onCloseModal, openModal }: LoginModalProps) => {
 
       // update state of user to logged in
       setUser(jwtDecode<User>(res.token));
+      setAuthToken(res.token);
 
       reset();
       onCloseModal();

@@ -1,7 +1,8 @@
 import { createContext, ReactNode, useEffect, useState } from "react";
 import { Cart } from "../Cart/Cart";
 import { Product } from "../hooks/useData";
-import { addToCartApi } from "../components/services/cartServices";
+import { addToCartApi, getUserCart } from "../components/services/cartServices";
+import { useAuth } from "../hooks/useAuth";
 
 interface CartContextType {
   cart: Cart[];
@@ -12,10 +13,26 @@ interface CartContextType {
 const CartContext = createContext<CartContextType | undefined>(undefined);
 
 export const CartProvider = ({ children }: { children: ReactNode }) => {
-  const [cart, setCart] = useState<Cart[]>(() => {
-    const savedCart = localStorage.getItem("cart");
-    return savedCart ? JSON.parse(savedCart) : [];
-  });
+  const [cart, setCart] = useState<Cart[]>([]);
+  const { user } = useAuth();
+
+  useEffect(() => {
+    const fetchCart = async () => {
+      if (!user) {
+        setCart([]);
+        return;
+      }
+
+      try {
+        const res = await getUserCart();
+        console.log(res.data);
+        setCart(res.data);
+      } catch (error) {
+        console.error(error);
+      }
+    };
+    fetchCart();
+  }, [user]);
 
   const addToCart = async (product: Product, quantity: number) => {
     const updatedCart = [...cart];
@@ -39,9 +56,6 @@ export const CartProvider = ({ children }: { children: ReactNode }) => {
       setCart(cart);
     }
   };
-  useEffect(() => {
-    localStorage.setItem("cart", JSON.stringify(cart));
-  }, [cart]);
 
   return (
     <CartContext.Provider value={{ cart, setCart, addToCart }}>

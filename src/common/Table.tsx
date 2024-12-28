@@ -2,6 +2,7 @@ import { Trash2 } from "lucide-react";
 import { Cart } from "../Cart/Cart";
 import { useCart } from "../hooks/useCart";
 import QuantityInput from "../components/SingleProduct/QuantityInput";
+import { removeItem } from "../components/services/cartServices";
 
 interface TableProps {
   carts: Cart[];
@@ -13,10 +14,10 @@ const Table = ({ carts, headings }: TableProps) => {
     0
   );
 
-  const { setCart, cart } = useCart();
+  const { setCart } = useCart();
 
   const handleQuantityChange = (cartItem: Cart, quantity: number) => {
-    const updatedCart = cart.map((item) =>
+    const updatedCart = carts.map((item) =>
       item.product._id === cartItem.product._id
         ? { ...item, quantity: quantity }
         : item
@@ -25,17 +26,25 @@ const Table = ({ carts, headings }: TableProps) => {
     setCart(updatedCart);
   };
 
-  const handleRemoveProduct = (cartIndex: number) => {
-    const updatedCart = cart.filter((_, index) => index !== cartIndex);
+  const handleRemoveProduct = async (cartItem: Cart, cartIndex: number) => {
+    const updatedCart = carts.filter((_, index) => index !== cartIndex);
 
     setCart(updatedCart);
+
+    try {
+      const res = await removeItem(cartItem.product._id);
+
+      console.log(res.data);
+    } catch (error) {
+      console.error(error);
+    }
   };
 
-  console.log(cart);
+  console.log(carts);
 
   return (
     <>
-      {cart.length >= 1 ? (
+      {carts.length >= 1 ? (
         <>
           <table className="w-2/3 mt-10 rounded text-center overflow-hidden shadow-lg">
             <thead className="text-white ">
@@ -73,7 +82,7 @@ const Table = ({ carts, headings }: TableProps) => {
                   <td className="px-3 py-2 inline-flex justify-center cursor-pointer ">
                     <Trash2
                       className="text-red-500 ml-3  hover:filter hover:drop-shadow-[0_4px_10px_rgba(255,0,0,0.7)] duration-300 ease-in transition-all"
-                      onClick={() => handleRemoveProduct(index)}
+                      onClick={() => handleRemoveProduct(cart, index)}
                     />
                   </td>
                 </tr>
