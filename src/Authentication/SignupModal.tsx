@@ -26,6 +26,7 @@ const SignupModal = ({ openModal, onCloseModal }: SignupModalProps) => {
     register,
     reset,
     handleSubmit,
+    getValues,
     formState: { errors, isSubmitting },
   } = useForm<SignupCredentials>();
   const onSubmit = async (formData: SignupCredentials) => {
@@ -151,7 +152,11 @@ const SignupModal = ({ openModal, onCloseModal }: SignupModalProps) => {
                 label="Confirm Password"
                 placeholder="Enter confirm password"
                 register={register}
-                validationRules={{ required: "Required" }}
+                validationRules={{
+                  required: "Required",
+                  validate: (value: string) =>
+                    value === getValues("password") || "Passwords do not match",
+                }}
               />
             </div>
           </div>

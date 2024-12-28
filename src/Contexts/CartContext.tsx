@@ -3,6 +3,7 @@ import { Cart } from "../Cart/Cart";
 import { Product } from "../hooks/useData";
 import { addToCartApi, getUserCart } from "../components/services/cartServices";
 import { useAuth } from "../hooks/useAuth";
+import { toast } from "react-toastify";
 
 interface CartContextType {
   cart: Cart[];
@@ -18,20 +19,19 @@ export const CartProvider = ({ children }: { children: ReactNode }) => {
 
   useEffect(() => {
     const fetchCart = async () => {
-      if (!user) {
-        setCart([]);
-        return;
-      }
-
       try {
         const res = await getUserCart();
         console.log(res.data);
         setCart(res.data);
       } catch (error) {
+        toast.error("Something went wrong!");
         console.error(error);
       }
     };
-    fetchCart();
+
+    if (user) {
+      fetchCart();
+    }
   }, [user]);
 
   const addToCart = async (product: Product, quantity: number) => {
@@ -50,9 +50,11 @@ export const CartProvider = ({ children }: { children: ReactNode }) => {
 
     try {
       const res = await addToCartApi(product._id, quantity);
+      toast.success("Product Added Successfully");
       console.log(res.data);
     } catch (error) {
       console.error(error);
+      toast.error("Failed to add product");
       setCart(cart);
     }
   };

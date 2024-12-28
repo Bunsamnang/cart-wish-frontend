@@ -1,7 +1,7 @@
 import { AlignJustify } from "lucide-react";
 import { useEffect, useState } from "react";
 import Link from "../common/Link";
-import { NavLink } from "react-router-dom";
+import { NavLink, useNavigate } from "react-router-dom";
 import { useAuth } from "../hooks/useAuth";
 import { useCart } from "../hooks/useCart";
 import setAuthToken from "../utils/setAuthToken";
@@ -16,6 +16,8 @@ const NavBar = ({ onOpenLoginModal, onOpenSignupModal }: NavBarProps) => {
   const { user, setUser } = useAuth();
 
   const { cart, setCart } = useCart();
+
+  const navigate = useNavigate();
 
   const [isExpanded, setIsExpanded] = useState(false);
 
@@ -42,6 +44,8 @@ const NavBar = ({ onOpenLoginModal, onOpenSignupModal }: NavBarProps) => {
     setCart([]);
     localStorage.removeItem("token");
     setAuthToken("");
+
+    navigate("/");
   };
 
   return (

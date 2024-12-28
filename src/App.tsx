@@ -7,6 +7,9 @@ import { AuthProvider } from "./Contexts/AuthContext";
 import { CartProvider } from "./Contexts/CartContext";
 import setAuthToken from "./utils/setAuthToken";
 import { getJwt } from "./components/services/userServices";
+import { ToastContainer } from "react-toastify";
+
+import "react-toastify/ReactToastify.css";
 
 setAuthToken(getJwt());
 
@@ -24,6 +27,7 @@ const App = () => {
           />
 
           <main>
+            <ToastContainer position="bottom-right" />
             <Routing />
           </main>
 

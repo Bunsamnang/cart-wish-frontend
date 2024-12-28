@@ -24,7 +24,7 @@ const CartPage = () => {
 
           <Table
             headings={["Item", "Price", "Quantity", "Total", "Remove"]}
-            carts={cart}
+            cart={cart}
           />
         </section>
       ) : (

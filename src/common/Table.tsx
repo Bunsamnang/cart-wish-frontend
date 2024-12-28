@@ -3,36 +3,38 @@ import { Cart } from "../Cart/Cart";
 import { useCart } from "../hooks/useCart";
 import QuantityInput from "../components/SingleProduct/QuantityInput";
 import { removeItem } from "../components/services/cartServices";
+import { Product } from "../hooks/useData";
+import { useEffect } from "react";
 
 interface TableProps {
-  carts: Cart[];
+  cart: Cart[];
   headings: string[];
 }
-const Table = ({ carts, headings }: TableProps) => {
-  const totalAmount = carts.reduce(
+const Table = ({ cart, headings }: TableProps) => {
+  const totalAmount = cart.reduce(
     (sum, item) => sum + item.product.price * item.quantity,
     0
   );
 
+  useEffect(() => {}, [cart]);
+
   const { setCart } = useCart();
 
-  const handleQuantityChange = (cartItem: Cart, quantity: number) => {
-    const updatedCart = carts.map((item) =>
-      item.product._id === cartItem.product._id
-        ? { ...item, quantity: quantity }
-        : item
+  const handleQuantityChange = (cartItem: Product, quantity: number) => {
+    const updatedCart = cart.map((item) =>
+      item.product._id === cartItem._id ? { ...item, quantity: quantity } : item
     );
 
     setCart(updatedCart);
   };
 
-  const handleRemoveProduct = async (cartItem: Cart, cartIndex: number) => {
-    const updatedCart = carts.filter((_, index) => index !== cartIndex);
+  const handleRemoveProduct = async (cartItem: Product, cartIndex: number) => {
+    const updatedCart = cart.filter((_, index) => index !== cartIndex);
 
     setCart(updatedCart);
 
     try {
-      const res = await removeItem(cartItem.product._id);
+      const res = await removeItem(cartItem._id);
 
       console.log(res.data);
     } catch (error) {
@@ -40,11 +42,11 @@ const Table = ({ carts, headings }: TableProps) => {
     }
   };
 
-  console.log(carts);
+  console.log(cart);
 
   return (
     <>
-      {carts.length >= 1 ? (
+      {cart.length >= 1 ? (
         <>
           <table className="w-2/3 mt-10 rounded text-center overflow-hidden shadow-lg">
             <thead className="text-white ">
@@ -58,31 +60,31 @@ const Table = ({ carts, headings }: TableProps) => {
             </thead>
 
             <tbody>
-              {carts.map((cart, index) => (
+              {cart.map(({ product, quantity }, index) => (
                 <tr
                   className={`${(index + 1) % 2 === 0 ? "bg-gray-200" : ""}`}
                   key={index}
                 >
                   <td className="px-3 py-2 whitespace-nowrap w-1/5">
-                    {cart.product.title}
+                    {product.title}
                   </td>
-                  <td className="px-3 py-2 w-1/5">${cart.product.price}</td>
+                  <td className="px-3 py-2 w-1/5">${product.price}</td>
                   <td className=" px-3 py-2 w-1/5">
                     <QuantityInput
-                      quantity={cart.quantity}
-                      stock={cart.product.stock}
+                      quantity={quantity}
+                      stock={product.stock}
                       setQuantity={(newQuantity) => {
-                        handleQuantityChange(cart, newQuantity);
+                        handleQuantityChange(product, newQuantity);
                       }}
                     />
                   </td>
                   <td className="px-3 py-2 w-1/5">
-                    ${cart.product.price * cart.quantity}
+                    ${product.price * quantity}
                   </td>
                   <td className="px-3 py-2 inline-flex justify-center cursor-pointer ">
                     <Trash2
                       className="text-red-500 ml-3  hover:filter hover:drop-shadow-[0_4px_10px_rgba(255,0,0,0.7)] duration-300 ease-in transition-all"
-                      onClick={() => handleRemoveProduct(cart, index)}
+                      onClick={() => handleRemoveProduct(product, index)}
                     />
                   </td>
                 </tr>
