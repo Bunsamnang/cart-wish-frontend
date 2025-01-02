@@ -58,17 +58,7 @@ const ProductList = () => {
             {isLoading
               ? skeletons.map((_, index) => <ProductCardSkeleton key={index} />)
               : data?.products.map((product) => (
-                  <ProductCard
-                    image={product.images[0]}
-                    imageAlt={product.title}
-                    link={product._id}
-                    name={product.title}
-                    numRating={product.reviews.counts}
-                    price={product.price}
-                    rating={product.reviews.rate.toFixed(1)}
-                    stock={product.stock}
-                    key={product._id}
-                  />
+                  <ProductCard product={product} key={product._id} />
                 ))}
           </div>
           <div className="flex items-center justify-center">

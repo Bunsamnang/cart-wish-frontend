@@ -12,3 +12,10 @@ export async function getUserCart() {
 export async function removeItem(productId: string) {
   return api_client.patch(`/cart/remove/${productId}`);
 }
+
+export async function increaseQuantity(productId: string) {
+  return api_client.patch(`/cart/increase/${productId}`);
+}
+export async function decreaseQuantity(productId: string) {
+  return api_client.patch(`/cart/decrease/${productId}`);
+}

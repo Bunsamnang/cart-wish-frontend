@@ -12,7 +12,7 @@ const CartPage = () => {
         <section className="cart-page flex flex-col items-center mt-5">
           <div className="user_details flex items-center gap-4">
             <img
-              src={`http://localhost:5000/profile/${user?.profilePic}`}
+              src={`http://localhost:5000/profile/${user.profilePic}`}
               alt="profile picture"
               className="w-16 h-16 rounded-full"
             />

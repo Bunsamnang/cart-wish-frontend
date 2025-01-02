@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import NavBar from "./components/NavBar";
 import LoginModal from "./Authentication/LoginModal";
 import SignupModal from "./Authentication/SignupModal";
@@ -10,12 +10,37 @@ import { getJwt } from "./components/services/userServices";
 import { ToastContainer } from "react-toastify";
 
 import "react-toastify/ReactToastify.css";
+import { ArrowUpFromLine } from "lucide-react";
 
 setAuthToken(getJwt());
 
 const App = () => {
   const [openLoginModal, setOpenLoginModal] = useState(false);
   const [openSignupModal, setOpenSignupModal] = useState(false);
+  const [visible, setVisible] = useState(false);
+
+  useEffect(() => {
+    const toggleVisibility = () => {
+      if (window.scrollY >= 600) {
+        setVisible(true);
+      } else {
+        setVisible(false);
+      }
+    };
+
+    window.addEventListener("scroll", toggleVisibility);
+
+    return () => {
+      window.removeEventListener("scroll", toggleVisibility);
+    };
+  }, []);
+
+  const scrollToTop = () => {
+    window.scroll({
+      top: 0,
+      behavior: "smooth",
+    });
+  };
 
   return (
     <AuthProvider>
@@ -44,6 +69,16 @@ const App = () => {
               onCloseModal={() => setOpenSignupModal(false)}
             />
           )}
+
+          <button
+            onClick={scrollToTop}
+            className={`fixed rounded-full bottom-4 right-4 p-3 bg-slate-800 text-white shadow-lg transition-opacity duration-300 ease-in
+              ${visible ? "opacity-100" : "opacity-0 pointer-events-none"}
+            `}
+            aria-label="Scroll to top"
+          >
+            <ArrowUpFromLine size={25} />
+          </button>
         </div>
       </CartProvider>
     </AuthProvider>

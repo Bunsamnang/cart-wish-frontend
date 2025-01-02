@@ -72,6 +72,7 @@ const Table = ({ cart, headings }: TableProps) => {
                   <td className=" px-3 py-2 w-1/5">
                     <QuantityInput
                       quantity={quantity}
+                      productId={product._id}
                       stock={product.stock}
                       setQuantity={(newQuantity) => {
                         handleQuantityChange(product, newQuantity);

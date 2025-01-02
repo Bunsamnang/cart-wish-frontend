@@ -71,57 +71,73 @@ const NavBar = ({ onOpenLoginModal, onOpenSignupModal }: NavBarProps) => {
         onClick={() => setIsExpanded(!isExpanded)}
       />
       <ul
-        className={`w-full max-h-0 opacity-0 overflow-hidden transition-all duration-300 ease lg:w-auto lg:flex lg:max-h-screen lg:opacity-100 text-gray-400 
+        className={` w-full max-h-0 opacity-0 overflow-hidden transition-all duration-300 ease lg:w-auto lg:flex lg:flex-1 lg:justify-between lg:max-h-screen lg:opacity-100 text-gray-400 
           ${isExpanded ? "max-h-screen opacity-100" : ""}
             
         `}
       >
-        <li className="py-2 px-4 hover:text-white transition-colors duration-300 ease-in-out">
-          <Link link="/" title="Home" />
-        </li>
-        <li className="py-2 px-4 hover:text-white transition-colors duration-300 ease-in-out">
-          <Link link="/products" title="Products" />
-        </li>
+        <form className="w-full max-w-xs relative border rounded-sm max-lg:my-4 lg:ml-2">
+          <input
+            type="text"
+            className="w-full border-none focus:outline-none "
+          />
+          <button
+            type="submit"
+            className="absolute right-0 top-0 h-full bg-violet-500 text-white px-4  rounded-sm hover:bg-violet-600 transition duration-300 ease-in-out"
+          >
+            Search
+          </button>
+        </form>
+        <div className="flex max-lg:flex-col max-lg:gap-2">
+          <li className="lg:py-2 px-4 hover:text-white transition-colors duration-300 ease-in-out">
+            <Link link="/" title="Home" />
+          </li>
+          <li className="lg:py-2 px-4 hover:text-white transition-colors duration-300 ease-in-out">
+            <Link link="/products" title="Products" />
+          </li>
 
-        {user ? (
-          <>
-            <li className="py-2 px-4 hover:text-white transition-colors duration-300 ease-in-out">
-              <Link link="/myorder" title="MyOrder" />
-            </li>
-            <li
-              className={`py-2 px-4 mr-4  hover:text-white transition-colors duration-300 ease-in-out ${
-                isExpanded ? "mb-4" : ""
-              }`}
-            >
-              <Link link="/cart" title={`Cart(${cart.length})`} />
-            </li>
-            <button
-              className={`bg-red-600 text-white px-4 py-2 rounded-md hover:bg-red-700 transition duration-300 ease-in-out
+          {user ? (
+            <>
+              <li className="lg:py-2 px-4 hover:text-white transition-colors duration-300 ease-in-out">
+                <Link link="/myorder" title="MyOrder" />
+              </li>
+              <li
+                className="lg:py-2 px-4 mr-4  hover:text-white transition-colors duration-300 ease-in-out ${
+                 
+                "
+              >
+                <Link link="/cart" title={`Cart(${cart.length})`} />
+              </li>
+              <button
+                className={`bg-red-600 text-white px-4 py-2 rounded-md hover:bg-red-700 transition duration-300 ease-in-out self-start
                 ${isExpanded ? "ml-4" : ""}
                 `}
-              onClick={() => handleLogout()}
-            >
-              Log out
-            </button>
-          </>
-        ) : (
-          <>
-            <button
-              className={`inline-block mr-4 px-4 py-2 bg-black text-white rounded-md border border-white transition duration-300 ease-in-out hover:bg-white hover:text-black hover:border-black
-            ${isExpanded ? "ml-4" : ""}
+                onClick={() => handleLogout()}
+              >
+                Log out
+              </button>
+            </>
+          ) : (
+            <>
+              <button
+                className={`inline-block mr-4 px-4 py-2 bg-black text-white rounded-md border border-white transition duration-300 ease-in-out hover:bg-white hover:text-black hover:border-black self-start
+                  ${isExpanded ? "ml-4" : ""}
           `}
-              onClick={onOpenLoginModal}
-            >
-              Log in
-            </button>
-            <button
-              className="inline-block mr-1 px-4 py-2 bg-white text-black rounded-md border border-black transition duration-300 ease-in-out hover:bg-black hover:text-white hover:border-white"
-              onClick={onOpenSignupModal}
-            >
-              Sign up
-            </button>
-          </>
-        )}
+                onClick={onOpenLoginModal}
+              >
+                Log in
+              </button>
+              <button
+                className={`inline-block mr-1 px-4 py-2 bg-white text-black rounded-md border border-black transition duration-300 ease-in-out hover:bg-black hover:text-white hover:border-white self-start
+                    ${isExpanded ? "ml-4" : ""}
+                  `}
+                onClick={onOpenSignupModal}
+              >
+                Sign up
+              </button>
+            </>
+          )}
+        </div>
       </ul>
     </nav>
   );
