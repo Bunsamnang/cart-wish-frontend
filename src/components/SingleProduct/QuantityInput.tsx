@@ -5,6 +5,7 @@ interface QuantityInputProps {
   setQuantity: (quantity: number) => void;
   stock: number;
   productId: string;
+  isCartPage: boolean;
 }
 
 const QuantityInput = ({
@@ -12,24 +13,33 @@ const QuantityInput = ({
   setQuantity,
   stock,
   productId,
+  isCartPage,
 }: QuantityInputProps) => {
-  const handleIncrease = async (productId: string) => {
-    try {
-      const res = await increaseQuantity(productId);
+  const handleIncrease = async () => {
+    if (isCartPage) {
+      try {
+        const res = await increaseQuantity(productId);
 
-      console.log(res);
-    } catch (error) {
-      console.error(error);
+        console.log(res);
+      } catch (error) {
+        console.error(error);
+      }
     }
+
+    setQuantity(quantity + 1);
   };
-  const handleDecrease = async (productId: string) => {
-    try {
-      const res = decreaseQuantity(productId);
+  const handleDecrease = async () => {
+    if (isCartPage) {
+      try {
+        const res = decreaseQuantity(productId);
 
-      console.log(res);
-    } catch (error) {
-      console.error(error);
+        console.log(res);
+      } catch (error) {
+        console.error(error);
+      }
     }
+
+    setQuantity(quantity - 1);
   };
 
   return (
@@ -40,10 +50,7 @@ const QuantityInput = ({
           className={`bg-red-600 w-8 h-8 text-white text-2xl rounded-full ${
             quantity === 1 ? "opacity-70" : ""
           }`}
-          onClick={() => {
-            setQuantity(quantity - 1);
-            handleDecrease(productId);
-          }}
+          onClick={handleDecrease}
         >
           -
         </button>
@@ -53,10 +60,7 @@ const QuantityInput = ({
           className={`bg-green-600 w-8 h-8 text-white text-2xl rounded-full ${
             quantity === stock ? "opacity-70" : ""
           }`}
-          onClick={() => {
-            setQuantity(quantity + 1);
-            handleIncrease(productId);
-          }}
+          onClick={handleIncrease}
         >
           +
         </button>

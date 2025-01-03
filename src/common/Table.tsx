@@ -71,6 +71,7 @@ const Table = ({ cart, headings }: TableProps) => {
                   <td className="px-3 py-2 w-1/5">${product.price}</td>
                   <td className=" px-3 py-2 w-1/5">
                     <QuantityInput
+                      isCartPage
                       quantity={quantity}
                       productId={product._id}
                       stock={product.stock}
