@@ -1,10 +1,12 @@
-import { Trash2 } from "lucide-react";
+import { ShoppingCart, Trash2 } from "lucide-react";
+import { toast } from "react-toastify";
 import { Cart } from "../Cart/Cart";
-import { useCart } from "../hooks/useCart";
 import QuantityInput from "../components/SingleProduct/QuantityInput";
 import { removeItem } from "../components/services/cartServices";
+import { checkOutAPI } from "../components/services/orderServices";
+import { useCart } from "../hooks/useCart";
 import { Product } from "../hooks/useData";
-import { useEffect } from "react";
+import { NavLink } from "react-router-dom";
 
 interface TableProps {
   cart: Cart[];
@@ -15,8 +17,6 @@ const Table = ({ cart, headings }: TableProps) => {
     (sum, item) => sum + item.product.price * item.quantity,
     0
   );
-
-  useEffect(() => {}, [cart]);
 
   const { setCart } = useCart();
 
@@ -39,6 +39,18 @@ const Table = ({ cart, headings }: TableProps) => {
       console.log(res.data);
     } catch (error) {
       console.error(error);
+    }
+  };
+
+  const handleCheckout = async () => {
+    try {
+      const res = await checkOutAPI();
+      console.log(res);
+      toast.success("Order placed successfully");
+      setCart([]);
+    } catch (error) {
+      console.error(error);
+      toast.error("Failed to place order");
     }
   };
 
@@ -126,13 +138,27 @@ const Table = ({ cart, headings }: TableProps) => {
               </tbody>
             </table>
 
-            <button className="px-4 py-2 text-white bg-blue-600 rounded-md hover:bg-blue-800 transition-colors duration-300 ease-in">
+            <button
+              className="px-4 py-2 text-white bg-blue-600 rounded-md hover:bg-blue-800 transition-colors duration-300 ease-in"
+              onClick={handleCheckout}
+            >
               Check out
             </button>
           </div>
         </>
       ) : (
-        <p className="text-red-500 mt-5">No items added yet.</p>
+        <div className="flex mt-5 items-center gap-2 justify-center">
+          <ShoppingCart size={25} className="text-violet-500 mr-2" />
+          <p>Your cart is empty. Start adding items.</p>
+          <NavLink
+            to={"/products"}
+            className={
+              "text-blue-500 hover:underline hover:text-blue-800 duration-300 transition-colors ease-in"
+            }
+          >
+            Browse products.
+          </NavLink>
+        </div>
       )}
     </>
   );

@@ -6,7 +6,7 @@ const FeaturedProducts = () => {
     useData<Product[]>("/products/featured");
 
   return (
-    <section className="my-14">
+    <section data-aos="zoom-in" className="my-14">
       <h1 className="text-3xl font-bold text-center mb-16">
         Featured Products
       </h1>

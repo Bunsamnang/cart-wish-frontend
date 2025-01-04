@@ -8,9 +8,10 @@ import { CartProvider } from "./Contexts/CartContext";
 import setAuthToken from "./utils/setAuthToken";
 import { getJwt } from "./components/services/userServices";
 import { ToastContainer } from "react-toastify";
-
 import "react-toastify/ReactToastify.css";
 import { ArrowUpFromLine } from "lucide-react";
+import AOS from "aos";
+import "aos/dist/aos.css";
 
 setAuthToken(getJwt());
 
@@ -20,6 +21,11 @@ const App = () => {
   const [visible, setVisible] = useState(false);
 
   useEffect(() => {
+    AOS.init({
+      duration: 1200,
+      easing: "ease-in-out",
+    });
+
     const toggleVisibility = () => {
       if (window.scrollY >= 600) {
         setVisible(true);

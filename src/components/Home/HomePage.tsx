@@ -9,7 +9,7 @@ const HomePage = () => {
         image={iphone}
         title="Buy iPhone 14 Pro"
         subTitle="Experience the power of the lates iPhone 16 with our most Pro camera ever."
-        link="/"
+        link="/products/675ae6685bb9cedb24a65727"
       />
 
       <FeaturedProducts />
@@ -17,7 +17,7 @@ const HomePage = () => {
         image={mac}
         title="Transform Your Workspace with the Ultimate Mac Setup"
         subTitle="Elevate your productivity and creativity with a sleek, powerful Mac ecosystem."
-        link="/"
+        link="/products?category=Laptops"
       />
     </div>
   );
