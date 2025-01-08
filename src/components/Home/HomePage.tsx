@@ -17,7 +17,7 @@ const HomePage = () => {
         image={mac}
         title="Transform Your Workspace with the Ultimate Mac Setup"
         subTitle="Elevate your productivity and creativity with a sleek, powerful Mac ecosystem."
-        link="/products?category=Laptops"
+        link="products/675ae6685bb9cedb24a6572f"
       />
     </div>
   );

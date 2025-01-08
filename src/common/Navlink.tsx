@@ -5,7 +5,7 @@ interface LinkProps {
   link: string;
 }
 
-const Link = ({ title, link }: LinkProps) => {
+const Navlink = ({ title, link }: LinkProps) => {
   return (
     <NavLink
       to={link}
@@ -16,4 +16,4 @@ const Link = ({ title, link }: LinkProps) => {
   );
 };
 
-export default Link;
+export default Navlink;

@@ -12,17 +12,20 @@ import "react-toastify/ReactToastify.css";
 import { ArrowUpFromLine } from "lucide-react";
 import AOS from "aos";
 import "aos/dist/aos.css";
+import { useOpen } from "./hooks/useOpen";
 
 setAuthToken(getJwt());
 
 const App = () => {
-  const [openLoginModal, setOpenLoginModal] = useState(false);
+  const { openLoginModal, setOpenLoginModal } = useOpen();
+
   const [openSignupModal, setOpenSignupModal] = useState(false);
   const [visible, setVisible] = useState(false);
 
   useEffect(() => {
     AOS.init({
       duration: 1200,
+      once: false,
       easing: "ease-in-out",
     });
 
@@ -52,12 +55,9 @@ const App = () => {
     <AuthProvider>
       <CartProvider>
         <div className="app grid grid-rows-[100px_auto] max-md:grid-rows-[auto_auto]">
-          <NavBar
-            onOpenLoginModal={() => setOpenLoginModal(true)}
-            onOpenSignupModal={() => setOpenSignupModal(true)}
-          />
+          <NavBar onOpenSignupModal={() => setOpenSignupModal(true)} />
 
-          <main>
+          <main className="pt-16">
             <ToastContainer position="bottom-right" />
             <Routing />
           </main>
@@ -78,7 +78,7 @@ const App = () => {
 
           <button
             onClick={scrollToTop}
-            className={`fixed rounded-full bottom-4 right-4 p-3 bg-slate-800 text-white shadow-lg transition-opacity duration-300 ease-in
+            className={`fixed rounded-full bottom-4 right-4 max-md:p-2 p-3 bg-slate-800 text-white shadow-lg transition-opacity duration-300 ease-in
               ${visible ? "opacity-100" : "opacity-0 pointer-events-none"}
             `}
             aria-label="Scroll to top"

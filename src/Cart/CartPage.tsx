@@ -9,7 +9,10 @@ const CartPage = () => {
   return (
     <>
       {user ? (
-        <section className="cart-page flex flex-col items-center mt-5">
+        <section
+          className="cart-page flex flex-col items-center mt-20"
+          data-aos="slide-right"
+        >
           <div className="user_details flex items-center gap-4">
             <img
               src={`http://localhost:5000/profile/${user.profilePic}`}
@@ -28,7 +31,10 @@ const CartPage = () => {
           />
         </section>
       ) : (
-        <p className="text-red-500 text-center text-xl mt-3">
+        <p
+          className="text-red-500 text-center text-xl mt-3"
+          data-aos="slide-right"
+        >
           Token expired, please log in again
         </p>
       )}

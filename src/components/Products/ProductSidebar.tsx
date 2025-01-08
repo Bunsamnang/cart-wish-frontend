@@ -7,7 +7,7 @@ const ProductSidebar = () => {
   const { data: categories, errorMsg } = useData<Product[]>("/category");
 
   return (
-    <aside className="bg-white">
+    <aside className="bg-white" data-aos="fade-right">
       <h1 className="text-2xl font-semibold mt-2 ml-5">Category</h1>
       <Sidebar className="w-full bg-white">
         <SidebarItems>

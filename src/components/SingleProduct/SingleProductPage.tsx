@@ -38,7 +38,10 @@ const SingleProductPage = () => {
             product && (
               <>
                 <section className="grid md:grid-cols-[2fr_1.8fr] place-items-center mt-10 max-md:grid-rows-2 max-md:mt-0 max-md:mb-3">
-                  <div className="flex gap-5 justify-center max-md:flex-col max-md:items-center">
+                  <div
+                    data-aos="fade-right"
+                    className="flex gap-5 justify-center max-md:flex-col max-md:items-center"
+                  >
                     <div className="flex flex-col max-md:flex-row justify-center gap-4 single-product-thumbnail">
                       {product.images.map((image, index) => (
                         <img
@@ -57,7 +60,10 @@ const SingleProductPage = () => {
                       className="rounded-md single-product-display w-[40%]  aspect-square object-contain"
                     />
                   </div>
-                  <div className="single-product-details flex flex-col max-md:items-center max-md:gap-3">
+                  <div
+                    data-aos="fade-left"
+                    className="single-product-details flex flex-col max-md:items-center max-md:gap-3"
+                  >
                     <h1 className="text-2xl font-bold mb-2">{product.title}</h1>
                     <p className="max-md:text-center">{product.description}</p>
                     <p className="font-semibold mt-2 text-xl">

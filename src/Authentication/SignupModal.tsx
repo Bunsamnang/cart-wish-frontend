@@ -40,6 +40,7 @@ const SignupModal = ({ openModal, onCloseModal }: SignupModalProps) => {
 
       reset();
       onCloseModal();
+      window.location.reload();
       // eslint-disable-next-line @typescript-eslint/no-explicit-any
     } catch (error: any) {
       if (error.response && error.response.status === 400) {
@@ -69,7 +70,13 @@ const SignupModal = ({ openModal, onCloseModal }: SignupModalProps) => {
   };
 
   return (
-    <Modal show={openModal} onClose={onCloseModal} dismissible>
+    <Modal
+      show={openModal}
+      onClose={onCloseModal}
+      dismissible
+      data-aos="zoom-out"
+      data-aos-duration="1000"
+    >
       <ModalHeader>Sign up</ModalHeader>
 
       <ModalBody>

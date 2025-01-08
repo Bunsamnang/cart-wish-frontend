@@ -1,7 +1,7 @@
-import { useEffect, useState } from "react";
+import { LoaderCircle } from "lucide-react";
 import { Order } from "../Cart/Order";
-import { getOrderAPI } from "../components/services/orderServices";
 import { useAuth } from "../hooks/useAuth";
+import useData from "../hooks/useData";
 
 interface MyOrderPageProps {
   headings: string[];
@@ -26,62 +26,68 @@ interface MyOrderAPI {
 
 const MyOrderPage = ({ headings }: MyOrderPageProps) => {
   const { user } = useAuth();
-  const [order, setOrder] = useState<MyOrderAPI[]>([]);
-
-  useEffect(() => {
-    const getOrder = async () => {
-      try {
-        const res = await getOrderAPI();
-        console.log(res.data);
-        setOrder(res.data);
-      } catch (error) {
-        console.error(error);
-      }
-    };
-
-    getOrder();
-  }, []);
+  const { data: orders, isLoading, errorMsg } = useData<MyOrderAPI[]>("/order");
 
   return (
     <>
       {user ? (
-        <section className="my_order flex justify-center md:p-2">
-          <table className="w-3/4 max-lg:w-full mt-10 rounded text-center overflow-hidden shadow-lg">
-            <thead className="text-white ">
-              <tr className=" bg-slate-800 ">
-                {headings.map((heading, index) => (
-                  <th
-                    key={index}
-                    className="px-3 py-2 "
-                    colSpan={index === 1 ? 2 : 1}
-                  >
-                    {heading}
-                  </th>
-                ))}
-              </tr>
-            </thead>
+        <section
+          className="my_order flex justify-center md:p-2 mt-20"
+          data-aos="slide-right"
+        >
+          {errorMsg ? (
+            <p className="text-red-500 italic">{errorMsg}</p>
+          ) : (
+            <>
+              {isLoading ? (
+                <LoaderCircle className="animate-spin text-slate-800 w-10 h-10" />
+              ) : (
+                <table className="w-3/4 max-lg:w-full mt-10 rounded text-center overflow-hidden shadow-lg">
+                  <thead className="text-white ">
+                    <tr className=" bg-slate-800 ">
+                      {headings.map((heading, index) => (
+                        <th
+                          key={index}
+                          className="px-3 py-2 "
+                          colSpan={index === 1 ? 2 : 1}
+                        >
+                          {heading}
+                        </th>
+                      ))}
+                    </tr>
+                  </thead>
 
-            <tbody>
-              {order.map((item, index) => (
-                <tr key={item._id}>
-                  <td className="px-4 py-2">{index + 1}</td>
-                  <td colSpan={2}>
-                    {item.products.map(({ product }, index) => (
-                      <span key={product._id}>
-                        {product.title}{" "}
-                        {index === item.products.length - 1 ? "" : ", "}
-                      </span>
+                  <tbody>
+                    {orders?.map((order, index) => (
+                      <tr key={order._id}>
+                        <td className="px-4 py-2">{index + 1}</td>
+                        <td colSpan={2}>
+                          {order.products.map(
+                            ({ product, quantity }, index) => (
+                              <span key={product._id}>
+                                {product.title} ({quantity})
+                                {index === order.products.length - 1
+                                  ? ""
+                                  : ", "}
+                              </span>
+                            )
+                          )}
+                        </td>
+                        <td>${order.total}</td>
+                        <td>{order.status}</td>
+                      </tr>
                     ))}
-                  </td>
-                  <td>{item.total}</td>
-                  <td>{item.status}</td>
-                </tr>
-              ))}
-            </tbody>
-          </table>
+                  </tbody>
+                </table>
+              )}
+            </>
+          )}
         </section>
       ) : (
-        <p className="text-red-500 text-center text-xl mt-3">
+        <p
+          className="text-red-500 text-center text-xl mt-3"
+          data-aos="slide-right"
+        >
           Token expired, please log in again
         </p>
       )}

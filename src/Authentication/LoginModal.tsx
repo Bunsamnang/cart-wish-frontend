@@ -7,6 +7,7 @@ import { useState } from "react";
 import { useAuth } from "../hooks/useAuth";
 import { jwtDecode } from "jwt-decode";
 import setAuthToken from "../utils/setAuthToken";
+import { useOpen } from "../hooks/useOpen";
 
 interface LoginModalProps {
   openModal: boolean;
@@ -16,6 +17,9 @@ interface LoginModalProps {
 const LoginModal = ({ onCloseModal, openModal }: LoginModalProps) => {
   const [formError, setFormError] = useState("");
   const { setUser } = useAuth();
+
+  const { redirectFrom } = useOpen();
+
   const {
     register,
     reset,
@@ -33,6 +37,13 @@ const LoginModal = ({ onCloseModal, openModal }: LoginModalProps) => {
 
       reset();
       onCloseModal();
+
+      if (redirectFrom) {
+        window.location.href = redirectFrom;
+      } else {
+        window.location.reload();
+      }
+
       // eslint-disable-next-line @typescript-eslint/no-explicit-any
     } catch (error: any) {
       if (error.response) {
@@ -48,7 +59,13 @@ const LoginModal = ({ onCloseModal, openModal }: LoginModalProps) => {
 
   return (
     <>
-      <Modal show={openModal} onClose={onCloseModal} dismissible>
+      <Modal
+        show={openModal}
+        onClose={onCloseModal}
+        dismissible
+        data-aos="zoom-out"
+        data-aos-duration="1000"
+      >
         <ModalHeader>Log in</ModalHeader>
 
         <ModalBody>

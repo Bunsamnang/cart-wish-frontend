@@ -13,11 +13,13 @@ const ProductList = () => {
   const [search, setSearch] = useSearchParams();
   const category = search.get("category") || "";
   const page = parseInt(search.get("page") || "1");
+  const searchQuery = search.get("search") || "";
 
   const { data, errorMsg, isLoading } = useData<ProductsResponse>("/products", {
     params: {
       category,
       page,
+      search: searchQuery,
     },
   });
   console.log(data);
@@ -33,7 +35,7 @@ const ProductList = () => {
   };
 
   return (
-    <section className="bg-[#f6f8fa] p-2">
+    <section className="bg-[#f6f8fa] p-2" data-aos="fade-left">
       <header className="flex items-center justify-between gap-x-2 mb-5">
         <h1 className="text-2xl font-semibold">Products</h1>
         <select
