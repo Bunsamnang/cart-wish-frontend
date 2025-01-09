@@ -1,8 +1,12 @@
 import { createContext, ReactNode, useEffect, useState } from "react";
 import { Cart } from "../Cart/Cart";
-import useData, { Product } from "../hooks/useData";
-import { addToCartApi } from "../components/services/cartServices";
+import { Product } from "../hooks/useData";
+import {
+  addToCartApi,
+  getUserCartAPI,
+} from "../components/services/cartServices";
 import { toast } from "react-toastify";
+import { useAuth } from "../hooks/useAuth";
 
 interface CartContextType {
   cart: Cart[];
@@ -14,13 +18,24 @@ const CartContext = createContext<CartContextType | undefined>(undefined);
 
 export const CartProvider = ({ children }: { children: ReactNode }) => {
   const [cart, setCart] = useState<Cart[]>([]);
-  const { data } = useData<Cart[]>("/cart");
+  const { user } = useAuth();
+  // const { data } = useData<Cart[]>("/cart");
 
   useEffect(() => {
-    if (data) {
-      setCart(data);
+    const getUserCart = async () => {
+      try {
+        const res = await getUserCartAPI();
+        setCart(res.data);
+        console.log(res.data);
+      } catch (error) {
+        console.error(error);
+      }
+    };
+
+    if (user) {
+      getUserCart();
     }
-  }, [data]);
+  }, [user]);
 
   const addToCart = async (product: Product, quantity: number) => {
     const updatedCart = [...cart];

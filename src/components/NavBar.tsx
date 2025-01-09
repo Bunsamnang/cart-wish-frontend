@@ -45,8 +45,11 @@ const NavBar = ({ onOpenSignupModal }: NavBarProps) => {
         setSuggestions([]);
       }
     }
+    const delaySuggestions = setTimeout(() => {
+      getSuggestions();
+    }, 500);
 
-    getSuggestions();
+    return () => clearTimeout(delaySuggestions);
   }, [search]);
 
   // Handle resetting isExpanded when the screen width is >= 1024px
@@ -83,26 +86,26 @@ const NavBar = ({ onOpenSignupModal }: NavBarProps) => {
   };
 
   const handleKeyDown = (e: React.KeyboardEvent<HTMLInputElement>) => {
-    if (e.key === "ArrowDown") {
-      if (selectedItem === 9) {
-        setSelectedItem(9);
-      } else {
-        setSelectedItem((current) => current + 1);
-      }
-    } else if (e.key === "ArrowUp") {
-      if (selectedItem === 0) {
-        setSelectedItem(0);
-      } else {
-        setSelectedItem((current) => current - 1);
-      }
-    } else if (e.key === "Enter" && selectedItem >= 0) {
-      const suggestion = suggestions[selectedItem];
-      navigate(`/products?search=${suggestion.title}`);
+    if (selectedItem < suggestions.length) {
+      if (e.key === "ArrowDown") {
+        setSelectedItem((current) =>
+          current === suggestions.length - 1 ? 0 : current + 1
+        );
+      } else if (e.key === "ArrowUp") {
+        setSelectedItem((current) =>
+          current === 0 ? suggestions.length - 1 : current - 1
+        );
+      } else if (e.key === "Enter" && selectedItem >= 0) {
+        const suggestion = suggestions[selectedItem];
+        navigate(`/products?search=${suggestion.title}`);
 
-      // Reset search and suggestions to default to prevent handlesubmit
-      // from overriding
-      setSearch("");
-      setSuggestions([]);
+        // Reset search and suggestions to default to prevent handlesubmit
+        // from overriding
+        setSearch("");
+        setSuggestions([]);
+      }
+    } else {
+      setSelectedItem(0);
     }
   };
 

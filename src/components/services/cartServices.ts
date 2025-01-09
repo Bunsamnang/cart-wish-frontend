@@ -4,7 +4,7 @@ export function addToCartApi(productId: string, quantity: number) {
   return api_client.post(`/cart/${productId}`, { quantity });
 }
 
-export async function getUserCart() {
+export async function getUserCartAPI() {
   const res = await api_client.get("/cart");
   return res;
 }
