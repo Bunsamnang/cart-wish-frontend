@@ -7,16 +7,19 @@ import { checkOutAPI } from "../components/services/orderServices";
 import { useCart } from "../hooks/useCart";
 import { Product } from "../hooks/useData";
 import { NavLink } from "react-router-dom";
+import { useMemo } from "react";
 
 interface TableProps {
   cart: Cart[];
   headings: string[];
 }
 const Table = ({ cart, headings }: TableProps) => {
-  const totalAmount = cart.reduce(
-    (sum, item) => sum + item.product.price * item.quantity,
-    0
-  );
+  const subTotal = useMemo(() => {
+    return cart.reduce(
+      (sum, item) => sum + item.product.price * item.quantity,
+      0
+    );
+  }, [cart]);
 
   const { setCart } = useCart();
 
@@ -114,7 +117,7 @@ const Table = ({ cart, headings }: TableProps) => {
                     Subtotal
                   </td>
                   <td className="w-40 h-10 border border-slate-400 text-right">
-                    ${totalAmount}
+                    {subTotal}
                   </td>
                 </tr>
 
@@ -132,7 +135,7 @@ const Table = ({ cart, headings }: TableProps) => {
                     Total
                   </th>
                   <td className="font-bold w-40 h-10 border border-slate-400 text-right ">
-                    ${totalAmount + 5}
+                    ${subTotal + 5}
                   </td>
                 </tr>
               </tbody>

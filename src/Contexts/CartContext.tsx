@@ -29,6 +29,7 @@ export const CartProvider = ({ children }: { children: ReactNode }) => {
         console.log(res.data);
       } catch (error) {
         console.error(error);
+        toast.error("Something went wrong!");
       }
     };
 
