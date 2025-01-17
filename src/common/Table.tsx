@@ -1,13 +1,11 @@
 import { ShoppingCart, Trash2 } from "lucide-react";
-import { toast } from "react-toastify";
+import { useMemo } from "react";
+import { NavLink } from "react-router-dom";
 import { Cart } from "../Cart/Cart";
 import QuantityInput from "../components/SingleProduct/QuantityInput";
-import { removeItem } from "../components/services/cartServices";
-import { checkOutAPI } from "../components/services/orderServices";
-import { useCart } from "../hooks/useCart";
+import useDeleteFromCart from "../hooks/cart/useDeleteFromCart";
+import useCheckout from "../hooks/order/useCheckout";
 import { Product } from "../hooks/useData";
-import { NavLink } from "react-router-dom";
-import { useMemo } from "react";
 
 interface TableProps {
   cart: Cart[];
@@ -21,40 +19,15 @@ const Table = ({ cart, headings }: TableProps) => {
     );
   }, [cart]);
 
-  const { setCart } = useCart();
+  const deleteFromCartMutation = useDeleteFromCart();
+  const checkoutMutation = useCheckout();
 
-  const handleQuantityChange = (cartItem: Product, quantity: number) => {
-    const updatedCart = cart.map((item) =>
-      item.product._id === cartItem._id ? { ...item, quantity: quantity } : item
-    );
-
-    setCart(updatedCart);
+  const handleRemoveProduct = (cartItem: Product) => {
+    deleteFromCartMutation.mutate(cartItem._id);
   };
 
-  const handleRemoveProduct = async (cartItem: Product, cartIndex: number) => {
-    const updatedCart = cart.filter((_, index) => index !== cartIndex);
-
-    setCart(updatedCart);
-
-    try {
-      const res = await removeItem(cartItem._id);
-
-      console.log(res.data);
-    } catch (error) {
-      console.error(error);
-    }
-  };
-
-  const handleCheckout = async () => {
-    try {
-      const res = await checkOutAPI();
-      console.log(res);
-      toast.success("Order placed successfully");
-      setCart([]);
-    } catch (error) {
-      console.error(error);
-      toast.error("Failed to place order");
-    }
+  const handleCheckout = () => {
+    checkoutMutation.mutate();
   };
 
   console.log(cart);
@@ -90,9 +63,6 @@ const Table = ({ cart, headings }: TableProps) => {
                       quantity={quantity}
                       productId={product._id}
                       stock={product.stock}
-                      setQuantity={(newQuantity) => {
-                        handleQuantityChange(product, newQuantity);
-                      }}
                     />
                   </td>
                   <td className="px-3 py-2 w-1/5">
@@ -101,7 +71,7 @@ const Table = ({ cart, headings }: TableProps) => {
                   <td className="px-3 py-2 inline-flex justify-center cursor-pointer ">
                     <Trash2
                       className="text-red-500 ml-3  hover:filter hover:drop-shadow-[0_4px_10px_rgba(255,0,0,0.7)] duration-300 ease-in transition-all"
-                      onClick={() => handleRemoveProduct(product, index)}
+                      onClick={() => handleRemoveProduct(product)}
                     />
                   </td>
                 </tr>

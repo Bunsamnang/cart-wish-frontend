@@ -20,7 +20,7 @@ const NavBar = ({ onOpenSignupModal }: NavBarProps) => {
   // if user is logged in
   const { user, setUser } = useAuth();
 
-  const { cart, setCart } = useCart();
+  const { cart } = useCart();
 
   const navigate = useNavigate();
 
@@ -71,7 +71,6 @@ const NavBar = ({ onOpenSignupModal }: NavBarProps) => {
 
   const handleLogout = () => {
     setUser(null);
-    setCart([]);
     localStorage.removeItem("token");
     setAuthToken("");
 
@@ -138,19 +137,19 @@ const NavBar = ({ onOpenSignupModal }: NavBarProps) => {
         `}
       >
         <form
-          className="w-full max-w-xs relative border-none outline-none rounded-sm max-lg:my-4 lg:ml-2 focus:outline-none active:outline-none"
+          className="w-full max-w-xs relative border-none outline-none rounded-md max-lg:my-4 lg:ml-2 focus:outline-none active:outline-none"
           onSubmit={handleSubmit}
         >
           <input
             type="text"
-            className="w-full text-black border-none outline-none focus:outline-none "
+            className="w-full h-full  text-black border-none rounded-sm outline-none focus:outline-none "
             value={search}
             onChange={(e) => setSearch(e.target.value)}
             onKeyDown={handleKeyDown}
           />
           <button
             type="submit"
-            className="absolute right-0 top-0 h-full bg-violet-500 text-white px-4  rounded-sm hover:bg-violet-600 transition duration-300 ease-in-out"
+            className="absolute right-0 top-0 h-full rounded-sm bg-violet-500 text-white px-4  hover:bg-violet-600 transition duration-300 ease-in-out"
           >
             Search
           </button>
