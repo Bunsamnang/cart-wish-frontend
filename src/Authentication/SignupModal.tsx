@@ -2,12 +2,13 @@ import { Modal, ModalBody, ModalFooter, ModalHeader } from "flowbite-react";
 import { User } from "lucide-react";
 import TextInputField from "./TextInputField";
 import { useForm } from "react-hook-form";
-import { SignupCredentials, User as user } from "./AuthModel";
+import { SignupCredentials, singupSchema, User as user } from "./AuthModel";
 import { useState } from "react";
 import { signup } from "../components/services/userServices";
 import { useAuth } from "../hooks/useAuth";
 import { jwtDecode } from "jwt-decode";
 import setAuthToken from "../utils/setAuthToken";
+import { zodResolver } from "./../../node_modules/@hookform/resolvers/zod/src/zod";
 
 interface SignupModalProps {
   openModal: boolean;
@@ -16,7 +17,6 @@ interface SignupModalProps {
 
 const SignupModal = ({ openModal, onCloseModal }: SignupModalProps) => {
   const [profilePic, setProfilePic] = useState<File | null>(null);
-  const [formError, setFormError] = useState("");
 
   const { setUser } = useAuth();
 
@@ -26,9 +26,11 @@ const SignupModal = ({ openModal, onCloseModal }: SignupModalProps) => {
     register,
     reset,
     handleSubmit,
-    getValues,
+    setError,
     formState: { errors, isSubmitting },
-  } = useForm<SignupCredentials>();
+  } = useForm<SignupCredentials>({
+    resolver: zodResolver(singupSchema),
+  });
   const onSubmit = async (formData: SignupCredentials) => {
     try {
       // Use `profilePic ?? undefined` to ensure it's compatible with the `signup` function
@@ -44,30 +46,34 @@ const SignupModal = ({ openModal, onCloseModal }: SignupModalProps) => {
       // eslint-disable-next-line @typescript-eslint/no-explicit-any
     } catch (error: any) {
       if (error.response && error.response.status === 400) {
-        setFormError(error.response.data.message);
+        setError("root", {
+          type: "manual",
+          message:
+            error.response.data.message || "An unexpected error occurred",
+        });
         console.error(error.response.data.message);
       }
     }
   };
 
-  const passwordValidation = (value: string) => {
-    if (!value) {
-      return "Password is required"; // First rule: required
-    }
-    if (value.length < 8) {
-      return "Password must be at least 8 characters long"; // Second rule: minLength
-    }
-    if (!/[A-Z]/.test(value)) {
-      return "Password must contain at least one uppercase letter"; // Third rule: uppercase
-    }
-    if (!/\d/.test(value)) {
-      return "Password must contain at least one number"; // Fourth rule: number
-    }
-    if (!/[!@#$%^&*]/.test(value)) {
-      return "Password must contain at least one special character"; // Fifth rule: special character
-    }
-    return true; // If all conditions are met, validation passes
-  };
+  // const passwordValidation = (value: string) => {
+  //   if (!value) {
+  //     return "Password is required"; // First rule: required
+  //   }
+  //   if (value.length < 8) {
+  //     return "Password must be at least 8 characters long"; // Second rule: minLength
+  //   }
+  //   if (!/[A-Z]/.test(value)) {
+  //     return "Password must contain at least one uppercase letter"; // Third rule: uppercase
+  //   }
+  //   if (!/\d/.test(value)) {
+  //     return "Password must contain at least one number"; // Fourth rule: number
+  //   }
+  //   if (!/[!@#$%^&*]/.test(value)) {
+  //     return "Password must contain at least one special character"; // Fifth rule: special character
+  //   }
+  //   return true; // If all conditions are met, validation passes
+  // };
 
   return (
     <Modal
@@ -118,13 +124,6 @@ const SignupModal = ({ openModal, onCloseModal }: SignupModalProps) => {
                 label="Name"
                 placeholder="Enter your name"
                 register={register}
-                validationRules={{
-                  required: "Username required",
-                  minLength: {
-                    value: 5,
-                    message: "Name must be at least 5 characters long",
-                  },
-                }}
               />
             </div>
             <div className="md:flex-1">
@@ -135,7 +134,6 @@ const SignupModal = ({ openModal, onCloseModal }: SignupModalProps) => {
                 label="Email"
                 placeholder="Enter your email"
                 register={register}
-                validationRules={{ required: "Email required" }}
               />
             </div>
           </div>
@@ -148,7 +146,6 @@ const SignupModal = ({ openModal, onCloseModal }: SignupModalProps) => {
                 label="Password"
                 placeholder="Enter your password"
                 register={register}
-                validationRules={{ validate: passwordValidation }}
               />
             </div>
             <div className="md:flex-1">
@@ -159,11 +156,6 @@ const SignupModal = ({ openModal, onCloseModal }: SignupModalProps) => {
                 label="Confirm Password"
                 placeholder="Enter confirm password"
                 register={register}
-                validationRules={{
-                  required: "Required",
-                  validate: (value: string) =>
-                    value === getValues("password") || "Passwords do not match",
-                }}
               />
             </div>
           </div>
@@ -174,12 +166,11 @@ const SignupModal = ({ openModal, onCloseModal }: SignupModalProps) => {
             label="Delivery Address"
             placeholder="Enter delivery address"
             register={register}
-            validationRules={{ required: "Required" }}
           />
         </form>
-        {formError && (
+        {errors && (
           <div>
-            <em className="text-red-500">{formError}</em>
+            <em className="text-red-500">{errors.root?.message}</em>
           </div>
         )}
       </ModalBody>

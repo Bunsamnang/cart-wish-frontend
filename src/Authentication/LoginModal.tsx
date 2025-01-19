@@ -1,13 +1,13 @@
 import { Modal, ModalBody, ModalFooter, ModalHeader } from "flowbite-react";
 import TextInputField from "./TextInputField";
 import { useForm } from "react-hook-form";
-import { LoginCredentials, User } from "./AuthModel";
+import { LoginCredentials, loginSchema, User } from "./AuthModel";
 import { login } from "../components/services/userServices";
-import { useState } from "react";
 import { useAuth } from "../hooks/useAuth";
 import { jwtDecode } from "jwt-decode";
 import setAuthToken from "../utils/setAuthToken";
 import { useOpen } from "../hooks/useOpen";
+import { zodResolver } from "@hookform/resolvers/zod/src/zod.js";
 
 interface LoginModalProps {
   openModal: boolean;
@@ -15,7 +15,6 @@ interface LoginModalProps {
 }
 
 const LoginModal = ({ onCloseModal, openModal }: LoginModalProps) => {
-  const [formError, setFormError] = useState("");
   const { setUser } = useAuth();
 
   const { redirectFrom } = useOpen();
@@ -24,8 +23,11 @@ const LoginModal = ({ onCloseModal, openModal }: LoginModalProps) => {
     register,
     reset,
     handleSubmit,
+    setError,
     formState: { errors, isSubmitting },
-  } = useForm<LoginCredentials>();
+  } = useForm<LoginCredentials>({
+    resolver: zodResolver(loginSchema),
+  });
 
   const onSubmit = async (formData: LoginCredentials) => {
     try {
@@ -49,7 +51,11 @@ const LoginModal = ({ onCloseModal, openModal }: LoginModalProps) => {
       if (error.response) {
         // Backend responded with an error
         console.error(error.response.data.message); // Log the actual backend message
-        setFormError(error.response.data.message); // Optionally show it to the user
+        setError("root", {
+          type: "manual",
+          message:
+            error.response.data.message || "An unexpected error occurred",
+        }); // Optionally show it to the user
       } else {
         // Handle other errors (e.g., network issues)
         console.error("An unexpected error occurred:", error.message);
@@ -81,7 +87,6 @@ const LoginModal = ({ onCloseModal, openModal }: LoginModalProps) => {
               errors={errors}
               id="email"
               type="email"
-              validationRules={{ required: "Email required" }}
             />
             <TextInputField
               register={register}
@@ -90,11 +95,10 @@ const LoginModal = ({ onCloseModal, openModal }: LoginModalProps) => {
               errors={errors}
               id="password"
               type="password"
-              validationRules={{ required: "Password required" }}
             />
-            {formError && (
+            {errors && (
               <div>
-                <em className="text-red-500 ">{formError}</em>
+                <em className="text-red-500 ">{errors.root?.message}</em>
               </div>
             )}
           </form>

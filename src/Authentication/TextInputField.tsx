@@ -1,25 +1,25 @@
-import { FieldErrors, Path, UseFormRegister } from "react-hook-form";
-import { LoginCredentials, SignupCredentials } from "./AuthModel";
+import {
+  FieldErrors,
+  FieldValues,
+  Path,
+  UseFormRegister,
+} from "react-hook-form";
 import { Label, Textarea, TextInput } from "flowbite-react";
 import { useState } from "react";
 import { Eye, EyeOff } from "lucide-react";
 
-type InputTypes = LoginCredentials | SignupCredentials;
-
-interface TextInputFieldProps<T extends InputTypes> {
+interface TextInputFieldProps<T extends FieldValues> {
   register: UseFormRegister<T>;
-  validationRules?: object;
   id: Path<T>;
   label: string;
   placeholder: string;
-  errors: FieldErrors;
+  errors: FieldErrors<T>;
   type?: "text" | "email" | "password";
   isTextArea?: boolean;
 }
 
-const TextInputField = <T extends InputTypes>({
+const TextInputField = <T extends FieldValues>({
   register,
-  validationRules,
   id,
   label,
   errors,
@@ -29,10 +29,11 @@ const TextInputField = <T extends InputTypes>({
 }: TextInputFieldProps<T>) => {
   const [showPassword, setShowPassword] = useState(false);
 
-  const fieldError = errors[id];
-
-  // for toggling password to text and backward
+  // Determine input type for password toggle
   const inputType = type === "password" && showPassword ? "text" : type;
+
+  // Extract error message for the current field
+  const fieldError = errors[id]?.message as string | undefined;
 
   return (
     <>
@@ -46,15 +47,7 @@ const TextInputField = <T extends InputTypes>({
             shadow
             {...register(id)}
             color={fieldError ? "failure" : undefined}
-            helperText={
-              fieldError && (
-                <span>
-                  {typeof fieldError.message === "string"
-                    ? fieldError.message
-                    : ""}
-                </span>
-              )
-            }
+            helperText={fieldError && <span>{fieldError}</span>}
           />
         </div>
       ) : (
@@ -65,19 +58,10 @@ const TextInputField = <T extends InputTypes>({
             placeholder={placeholder}
             shadow
             type={inputType}
-            {...register(id, validationRules)}
+            {...register(id)}
             color={fieldError ? "failure" : undefined}
-            helperText={
-              fieldError && (
-                <span>
-                  {typeof fieldError.message === "string"
-                    ? fieldError.message
-                    : ""}
-                </span>
-              )
-            }
+            helperText={fieldError && <span>{fieldError}</span>}
           />
-
           {type === "password" && (
             <button
               type="button"
