@@ -27,6 +27,7 @@ export const CartProvider = ({ children }: { children: ReactNode }) => {
       return res.data;
     },
     enabled: !!user,
+    staleTime: 300_000,
   });
 
   const addToCartMutation = useAddToCart();

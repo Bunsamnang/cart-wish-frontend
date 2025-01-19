@@ -20,7 +20,11 @@ interface CustomConfig {
   params?: Record<string, string | number | boolean>; // type for params (key-value pair)
 }
 
-const useData = <T>(endpoint: string, customConfig: CustomConfig = {}) => {
+const useData = <T>(
+  endpoint: string,
+  customConfig: CustomConfig = {},
+  staleTime: number = 300_000
+) => {
   const fetchData = async () => {
     const res = await api_client.get(endpoint, customConfig);
     return res.data;
@@ -29,6 +33,7 @@ const useData = <T>(endpoint: string, customConfig: CustomConfig = {}) => {
   const { data, error, isLoading } = useQuery<T, Error>({
     queryKey: [endpoint, customConfig],
     queryFn: fetchData,
+    staleTime: staleTime,
   });
 
   const errorMsg = error?.message || "";

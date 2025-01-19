@@ -26,7 +26,11 @@ interface MyOrderAPI {
 
 const MyOrderPage = ({ headings }: MyOrderPageProps) => {
   const { user } = useAuth();
-  const { data: orders, isLoading, errorMsg } = useData<MyOrderAPI[]>("/order");
+  const {
+    data: orders,
+    isLoading,
+    errorMsg,
+  } = useData<MyOrderAPI[]>("/order", undefined, 1 * 60 * 1000);
 
   return (
     <>

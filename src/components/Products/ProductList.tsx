@@ -1,46 +1,53 @@
 import ProductCard from "./ProductCard";
-import useData from "../../hooks/useData";
 import { Product } from "./../../hooks/useData";
 import ProductCardSkeleton from "./ProductCardSkeleton";
 import { useSearchParams } from "react-router-dom";
-import Pagination from "../../common/PaginationList";
 import { useEffect, useState } from "react";
+import useProductList from "../../hooks/useProductList";
 
-interface ProductsResponse {
-  products: Product[];
-  totalProducts: number;
-}
 const ProductList = () => {
-  const [search, setSearch] = useSearchParams();
+  const [search] = useSearchParams();
   const category = search.get("category") || "";
-  const page = parseInt(search.get("page") || "1");
   const searchQuery = search.get("search") || "";
 
   const [sortBy, setSortBy] = useState("");
   const [sortedProducts, setSortedProducts] = useState<Product[]>([]);
 
-  const { data, errorMsg, isLoading } = useData<ProductsResponse>("/products", {
-    params: {
-      category,
-      page,
-      search: searchQuery,
-    },
-  });
-  console.log(data);
+  const { data, isLoading, error, hasNextPage, fetchNextPage } = useProductList(
+    category,
+    searchQuery
+  );
+  console.log(data?.pages);
   // create number of skeletons based on num of response
-  const skeletons = Array.from({ length: data?.products.length || 8 });
+  const skeletons = Array.from({ length: 8 });
 
-  const handlePageChange = (pageNum: number) => {
-    setSearch((prev) => {
-      const newSearchParams = new URLSearchParams(prev);
-      newSearchParams.set("page", pageNum.toString());
-      return newSearchParams;
-    });
-  };
+  const errorMsg = error?.message || "";
+  // const handlePageChange = (pageNum: number) => {
+  //   setSearch((prev) => {
+  //     const newSearchParams = new URLSearchParams(prev);
+  //     newSearchParams.set("page", pageNum.toString());
+  //     return newSearchParams;
+  //   });
+  // };
 
   useEffect(() => {
-    if (data && data.products) {
-      const products = [...data.products];
+    const handleScroll = () => {
+      const { scrollTop, scrollHeight, clientHeight } =
+        document.documentElement;
+      if (scrollHeight - scrollTop <= clientHeight * 1.5 && hasNextPage) {
+        fetchNextPage();
+      }
+    };
+
+    window.addEventListener("scroll", handleScroll);
+
+    return () => window.removeEventListener("scroll", handleScroll);
+  }, [fetchNextPage, hasNextPage]);
+
+  useEffect(() => {
+    if (data && data.pages) {
+      //flatmap: combining the values of the array (products) into one single array
+      const products = data.pages.flatMap((page) => page.products);
 
       if (sortBy === "price desc") {
         setSortedProducts(products.sort((a, b) => b.price - a.price));
@@ -87,16 +94,8 @@ const ProductList = () => {
             {isLoading
               ? skeletons.map((_, index) => <ProductCardSkeleton key={index} />)
               : sortedProducts.map((product) => (
-                  <ProductCard product={product} key={product._id} />
+                  <ProductCard key={product._id} product={product} />
                 ))}
-          </div>
-          <div className="flex items-center justify-center">
-            <Pagination
-              totalPost={data?.totalProducts || 0}
-              currentPage={page}
-              postPerPage={8}
-              onClick={handlePageChange}
-            />
           </div>
         </>
       )}

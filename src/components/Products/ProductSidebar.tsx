@@ -4,7 +4,11 @@ import useData, { Product } from "../../hooks/useData";
 import { NavLink } from "react-router-dom";
 
 const ProductSidebar = () => {
-  const { data: categories, errorMsg } = useData<Product[]>("/category");
+  const { data: categories, errorMsg } = useData<Product[]>(
+    "/category",
+    undefined,
+    24 * 60 * 60 * 1000
+  );
 
   return (
     <aside className="bg-white" data-aos="fade-right">
