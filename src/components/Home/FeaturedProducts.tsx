@@ -4,9 +4,10 @@ import ProductCard from "../Products/ProductCard";
 const FeaturedProducts = () => {
   const { data: featuredProducts, errorMsg } = useData<Product[]>(
     "/products/featured",
-    undefined,
     10 * 60 * 60 * 1000
   );
+
+  console.log(featuredProducts);
 
   return (
     <section data-aos="zoom-in" className="my-14">

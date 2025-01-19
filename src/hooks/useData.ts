@@ -16,22 +16,14 @@ export interface Product {
   _id: string;
 }
 
-interface CustomConfig {
-  params?: Record<string, string | number | boolean>; // type for params (key-value pair)
-}
-
-const useData = <T>(
-  endpoint: string,
-  customConfig: CustomConfig = {},
-  staleTime: number = 300_000
-) => {
+const useData = <T>(endpoint: string, staleTime: number = 300_000) => {
   const fetchData = async () => {
-    const res = await api_client.get(endpoint, customConfig);
+    const res = await api_client.get(endpoint);
     return res.data;
   };
 
   const { data, error, isLoading } = useQuery<T, Error>({
-    queryKey: [endpoint, customConfig],
+    queryKey: [endpoint],
     queryFn: fetchData,
     staleTime: staleTime,
   });

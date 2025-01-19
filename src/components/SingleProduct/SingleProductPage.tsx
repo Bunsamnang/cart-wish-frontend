@@ -37,7 +37,7 @@ const SingleProductPage = () => {
           ) : (
             product && (
               <>
-                <section className="grid md:grid-cols-[2fr_1.8fr] place-items-center mt-10 max-md:grid-rows-2 max-md:mt-0 max-md:mb-3">
+                <section className="grid md:grid-cols-[2fr_1.8fr] place-items-center mt-10 max-md:grid-rows-2 max-md:my-3">
                   <div
                     data-aos="fade-right"
                     className="flex gap-5 justify-center max-md:flex-col max-md:items-center"

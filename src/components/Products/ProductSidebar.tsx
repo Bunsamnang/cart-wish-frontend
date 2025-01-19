@@ -1,14 +1,21 @@
 import { Sidebar, SidebarItemGroup, SidebarItems } from "flowbite-react";
 
-import useData, { Product } from "../../hooks/useData";
+import useData from "../../hooks/useData";
 import { NavLink } from "react-router-dom";
 
+interface CategoryAPIResponse {
+  image: string;
+  name: string;
+  _id: string;
+}
+
 const ProductSidebar = () => {
-  const { data: categories, errorMsg } = useData<Product[]>(
+  const { data: categories, errorMsg } = useData<CategoryAPIResponse[]>(
     "/category",
-    undefined,
     24 * 60 * 60 * 1000
   );
+
+  console.log(categories);
 
   return (
     <aside className="bg-white" data-aos="fade-right">

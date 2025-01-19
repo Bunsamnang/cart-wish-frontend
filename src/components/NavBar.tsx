@@ -110,7 +110,7 @@ const NavBar = ({ onOpenSignupModal }: NavBarProps) => {
 
   return (
     <nav
-      className={`w-full fixed flex justify-between items-center flex-wrap p-4 h-24 t-0 left-0  z-10 bg-black text-white 
+      className={`w-full fixed flex justify-between items-center flex-wrap p-4 max-md:h-16 h-24 t-0 left-0  z-10 bg-black text-white 
        ${isExpanded ? "h-fit" : ""} 
       `}
     >
@@ -132,7 +132,7 @@ const NavBar = ({ onOpenSignupModal }: NavBarProps) => {
       />
       <ul
         className={` w-full max-h-0 opacity-0  transition-all duration-300 ease lg:w-auto lg:flex lg:flex-1 lg:justify-between lg:max-h-screen lg:opacity-100 text-gray-400 
-          ${isExpanded ? "max-h-screen opacity-100" : ""}
+          ${isExpanded ? "max-h-screen opacity-100 block" : "hidden lg:flex"}
             
         `}
       >
