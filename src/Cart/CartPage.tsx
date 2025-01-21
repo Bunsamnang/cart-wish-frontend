@@ -15,7 +15,9 @@ const CartPage = () => {
         >
           <div className="user_details flex items-center gap-4">
             <img
-              src={`http://localhost:5000/profile/${user.profilePic}`}
+              src={`${import.meta.env.VITE_BACKEND_URL}/profile/${
+                user.profilePic
+              }`}
               alt="profile picture"
               className="w-16 h-16 rounded-full"
             />

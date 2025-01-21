@@ -54,7 +54,9 @@ const SingleProductPage = () => {
                     <div className="flex flex-col max-md:flex-row justify-center gap-4 single-product-thumbnail">
                       {product.images.map((image, index) => (
                         <img
-                          src={`http://localhost:5000/products/${image}`}
+                          src={`${
+                            import.meta.env.VITE_BACKEND_URL
+                          }/products/${image}`}
                           key={index}
                           className={`w-20 h-20 max-md:w-14 max-md:h-14 rounded-md shadow cursor-pointer ${
                             selectedImage === index ? "scale-110" : ""
@@ -64,7 +66,9 @@ const SingleProductPage = () => {
                       ))}
                     </div>
                     <img
-                      src={`http://localhost:5000/products/${product.images[selectedImage]}`}
+                      src={`${import.meta.env.VITE_BACKEND_URL}/products/${
+                        product.images[selectedImage]
+                      }`}
                       alt={product.title}
                       className="rounded-md single-product-display w-[40%]  aspect-square object-contain"
                     />

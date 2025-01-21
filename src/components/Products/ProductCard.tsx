@@ -18,7 +18,7 @@ const ProductCard = ({ product }: ProductCardProps) => {
       <div className="relative overflow-hidden rounded-t-lg ">
         {/* Set fixed dimensions and use object-cover */}
         <img
-          src={`http://localhost:5000/products/${images[0]}`}
+          src={`${import.meta.env.VITE_BACKEND_URL}/products/${images[0]}`}
           alt={`${title} image`}
           className="w-full h-full object-contain aspect-[16/9]"
         />

@@ -35,7 +35,9 @@ const ProductSidebar = () => {
                   >
                     <div className="text-xl inline-flex justify-center items-center gap-2">
                       <img
-                        src={`http://localhost:5000/category/${category.image}`}
+                        src={`${import.meta.env.VITE_BACKEND_URL}/category/${
+                          category.image
+                        }`}
                         className="w-5 h-5"
                         alt={category.name}
                       />
