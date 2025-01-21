@@ -9,11 +9,11 @@ interface HeroSectionProps {
 
 const HeroSection = ({ title, subTitle, link, image }: HeroSectionProps) => {
   return (
-    <section
-      data-aos="zoom-in"
-      className="hero_section grid grid-cols-2 p-10  bg-black text-white max-sm:flex max-sm:flex-col max-sm:items-center max-sm:justify-center gap-5"
-    >
-      <div className="flex flex-col gap-7 h-full justify-center items-center text-center">
+    <section className="hero_section grid grid-cols-2 p-10  bg-black text-white max-sm:flex max-sm:flex-col max-sm:items-center max-sm:justify-center gap-5">
+      <div
+        className="flex flex-col gap-7 h-full justify-center items-center text-center"
+        data-aos="fade-right"
+      >
         <h1 className="text-2xl font-semibold max-sm:text-xl">{title}</h1>
         <p className="text-lg max-sm:text-sm">{subTitle}</p>
         <NavLink to={link}>
@@ -22,7 +22,7 @@ const HeroSection = ({ title, subTitle, link, image }: HeroSectionProps) => {
           </button>
         </NavLink>
       </div>
-      <div>
+      <div data-aos="fade-left">
         <img
           src={image}
           alt=""

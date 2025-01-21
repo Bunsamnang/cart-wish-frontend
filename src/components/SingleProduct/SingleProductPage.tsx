@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useCallback, useState } from "react";
 import useData, { Product } from "../../hooks/useData";
 import { useParams } from "react-router-dom";
 import { LoaderCircle } from "lucide-react";
@@ -21,6 +21,15 @@ const SingleProductPage = () => {
 
   const { addToCart } = useCart();
   const { user } = useAuth();
+
+  const increaseQuantity = useCallback(
+    () => setQuantity(quantity + 1),
+    [quantity]
+  );
+  const decreaseQuantity = useCallback(
+    () => setQuantity(quantity - 1),
+    [quantity]
+  );
 
   console.log(product);
 
@@ -77,7 +86,8 @@ const SingleProductPage = () => {
                             isCartPage={false}
                             productId={product._id}
                             quantity={quantity}
-                            setQuantity={setQuantity}
+                            increaseQuantity={increaseQuantity}
+                            decreaseQuantity={decreaseQuantity}
                             stock={product.stock}
                           />
                         </div>

@@ -3,9 +3,9 @@ import { useMemo } from "react";
 import { NavLink } from "react-router-dom";
 import { Cart } from "../Cart/Cart";
 import QuantityInput from "../components/SingleProduct/QuantityInput";
-import useDeleteFromCart from "../hooks/cart/useDeleteFromCart";
 import useCheckout from "../hooks/order/useCheckout";
 import { Product } from "../hooks/useData";
+import useRemoveFromCart from "../hooks/cart/useRemoveFromCart";
 
 interface TableProps {
   cart: Cart[];
@@ -19,11 +19,11 @@ const Table = ({ cart, headings }: TableProps) => {
     );
   }, [cart]);
 
-  const deleteFromCartMutation = useDeleteFromCart();
+  const removeFromCartMutation = useRemoveFromCart();
   const checkoutMutation = useCheckout();
 
   const handleRemoveProduct = (cartItem: Product) => {
-    deleteFromCartMutation.mutate(cartItem._id);
+    removeFromCartMutation.mutate(cartItem._id);
   };
 
   const handleCheckout = () => {

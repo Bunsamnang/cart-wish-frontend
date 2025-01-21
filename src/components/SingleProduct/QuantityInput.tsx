@@ -1,9 +1,10 @@
 import useDecreaseQuantity from "../../hooks/cart/useDecreaseQuantity";
-import useIncreaseQuantity from "../../hooks/cart/useIncreaseQuantity";
+import useIncreaseQuantity from "./../../hooks/cart/useIncreaseQuantity";
 
 interface QuantityInputProps {
   quantity: number;
-  setQuantity?: (quantity: number) => void;
+  increaseQuantity?: () => void;
+  decreaseQuantity?: () => void;
   stock: number;
   productId: string;
   isCartPage: boolean;
@@ -11,7 +12,8 @@ interface QuantityInputProps {
 
 const QuantityInput = ({
   quantity,
-  setQuantity,
+  increaseQuantity,
+  decreaseQuantity,
   stock,
   productId,
   isCartPage,
@@ -24,8 +26,8 @@ const QuantityInput = ({
       increaseQuantityMutation.mutate(productId);
     }
 
-    if (setQuantity) {
-      setQuantity(quantity + 1);
+    if (increaseQuantity) {
+      increaseQuantity();
     }
   };
   const handleDecrease = async () => {
@@ -33,8 +35,8 @@ const QuantityInput = ({
       decreaseQuantityMutation.mutate(productId);
     }
 
-    if (setQuantity) {
-      setQuantity(quantity - 1);
+    if (decreaseQuantity) {
+      decreaseQuantity();
     }
   };
 

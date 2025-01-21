@@ -3,7 +3,7 @@ import { removeItem } from "../../components/services/cartServices";
 import { toast } from "react-toastify";
 import { useAuth } from "../useAuth";
 
-const useDeleteFromCart = () => {
+const useRemoveFromCart = () => {
   const queryClient = useQueryClient();
   const { user } = useAuth();
 
@@ -26,4 +26,4 @@ const useDeleteFromCart = () => {
   });
 };
 
-export default useDeleteFromCart;
+export default useRemoveFromCart;
