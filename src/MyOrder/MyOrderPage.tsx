@@ -30,7 +30,7 @@ const MyOrderPage = ({ headings }: MyOrderPageProps) => {
     data: orders,
     isLoading,
     errorMsg,
-  } = useData<MyOrderAPI[]>("/order", undefined, 1 * 60 * 1000);
+  } = useData<MyOrderAPI[]>("/order", 1 * 60 * 1000);
 
   return (
     <>
