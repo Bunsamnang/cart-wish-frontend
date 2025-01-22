@@ -20,8 +20,12 @@ const FeaturedProducts = () => {
         <div className="flex justify-evenly max-sm:flex-col max-sm:items-center gap-5 max-lg:px-2">
           {featuredProducts &&
             featuredProducts.map((product, index) => (
-              <div data-aos="fade-down" data-aos-delay={`${index * 250}`}>
-                <ProductCard product={product} key={product._id} />
+              <div
+                data-aos="fade-down"
+                data-aos-delay={`${index * 250}`}
+                key={product._id}
+              >
+                <ProductCard product={product} />
               </div>
             ))}
         </div>

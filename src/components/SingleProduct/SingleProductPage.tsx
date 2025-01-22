@@ -36,7 +36,7 @@ const SingleProductPage = () => {
   return (
     <>
       {errorMsg ? (
-        <p className="text-red-500 text-center">{errorMsg}</p>
+        <p className="text-red-500 text-center mt-5">{errorMsg}</p>
       ) : (
         <>
           {isLoading ? (
