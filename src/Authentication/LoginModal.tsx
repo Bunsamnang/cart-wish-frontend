@@ -111,7 +111,7 @@ const LoginModal = ({ onCloseModal, openModal }: LoginModalProps) => {
             disabled={isSubmitting}
             className="w-full py-2 bg-black text-white rounded-md border border-white transition duration-300 ease-in-out hover:opacity-85"
           >
-            {isSubmitting ? "Loggin in" : "Log in"}
+            {isSubmitting ? "Logging in" : "Log in"}
           </button>
         </ModalFooter>
       </Modal>

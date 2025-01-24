@@ -5,25 +5,26 @@ import { useCart } from "../hooks/useCart";
 const CartPage = () => {
   const { user } = useAuth();
   const { cart } = useCart();
+  console.log(user);
 
   return (
     <>
       {user ? (
         <section
-          className="cart-page flex flex-col items-center mt-20"
+          className="cart-page flex flex-col items-center mt-20 max-sm:mt-10 "
           data-aos="slide-right"
         >
-          <div className="user_details flex items-center gap-4">
+          <div className="user_details flex items-center gap-4 max-sm:flex-col max-sm:justify-center">
             <img
               src={`${import.meta.env.VITE_BACKEND_URL}/profile/${
                 user.profilePic
               }`}
               alt="profile picture"
-              className="w-16 h-16 rounded-full"
+              className="w-16 h-16 rounded-full max-sm:w-32 max-sm:h-32"
             />
-            <div>
-              <p>Name: {user.name}</p>
-              <p>Email: {user.email}</p>
+            <div className="max-sm:text-center">
+              <p className="whitespace-nowrap">Name: {user.name}</p>
+              <p className="whitespace-nowrap">Email: {user.email}</p>
             </div>
           </div>
 

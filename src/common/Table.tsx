@@ -120,9 +120,13 @@ const Table = ({ cart, headings }: TableProps) => {
           </div>
         </>
       ) : (
-        <div className="flex mt-5 items-center gap-2 justify-center">
-          <ShoppingCart size={25} className="text-violet-500 mr-2" />
-          <p>Your cart is empty. Start adding items.</p>
+        <div className="flex mt-5 items-center gap-2 justify-center max-sm:flex-col">
+          <div className="flex items-center">
+            <ShoppingCart size={30} className="text-violet-500 mr-2" />
+            <p className="max-sm:text-sm">
+              Your cart is empty. Start adding items.
+            </p>
+          </div>
           <NavLink
             to={"/products"}
             className={
