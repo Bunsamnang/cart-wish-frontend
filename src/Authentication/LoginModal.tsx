@@ -1,13 +1,13 @@
 import { Modal, ModalBody, ModalFooter, ModalHeader } from "flowbite-react";
 import TextInputField from "./TextInputField";
 import { useForm } from "react-hook-form";
-import { LoginCredentials, loginSchema, User } from "./AuthModel";
-import { login } from "../components/services/userServices";
-import { useAuth } from "../hooks/useAuth";
-import { jwtDecode } from "jwt-decode";
+import { LoginCredentials, loginSchema } from "./AuthModel";
+import { login as loginAPI } from "../components/services/userServices";
+
 import setAuthToken from "../utils/setAuthToken";
 import { useOpen } from "../hooks/useOpen";
 import { zodResolver } from "@hookform/resolvers/zod/src/zod.js";
+import useAuth2 from "../hooks/useAuth2";
 
 interface LoginModalProps {
   openModal: boolean;
@@ -15,7 +15,9 @@ interface LoginModalProps {
 }
 
 const LoginModal = ({ onCloseModal, openModal }: LoginModalProps) => {
-  const { setUser } = useAuth();
+  // const { setUser } = useAuth();
+
+  const { login } = useAuth2();
 
   const { redirectFrom } = useOpen();
 
@@ -31,10 +33,11 @@ const LoginModal = ({ onCloseModal, openModal }: LoginModalProps) => {
 
   const onSubmit = async (formData: LoginCredentials) => {
     try {
-      const res = await login(formData);
+      const res = await loginAPI(formData);
 
       // update state of user to logged in
-      setUser(jwtDecode<User>(res.token));
+      // setUser(jwtDecode<User>(res.token));
+      login(res.token);
       setAuthToken(res.token);
 
       reset();
@@ -42,8 +45,6 @@ const LoginModal = ({ onCloseModal, openModal }: LoginModalProps) => {
 
       if (redirectFrom) {
         window.location.href = redirectFrom;
-      } else {
-        window.location.reload();
       }
 
       // eslint-disable-next-line @typescript-eslint/no-explicit-any

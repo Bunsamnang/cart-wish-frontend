@@ -6,6 +6,9 @@ import { BrowserRouter } from "react-router-dom";
 import { OpenModalProvider } from "./Contexts/OpenModalContext.tsx";
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 import { ReactQueryDevtools } from "@tanstack/react-query-devtools";
+import { Provider } from "react-redux";
+import { store } from "./store/store";
+
 const queryClient = new QueryClient();
 
 createRoot(document.getElementById("root")!).render(
@@ -13,7 +16,9 @@ createRoot(document.getElementById("root")!).render(
     <BrowserRouter>
       <OpenModalProvider>
         <QueryClientProvider client={queryClient}>
-          <App />
+          <Provider store={store}>
+            <App />
+          </Provider>
           <ReactQueryDevtools />
         </QueryClientProvider>
       </OpenModalProvider>

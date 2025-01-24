@@ -2,7 +2,7 @@ import { Card } from "flowbite-react";
 import { ShoppingBasket, Star } from "lucide-react";
 import { Product } from "../../hooks/useData";
 import { useCart } from "../../hooks/useCart";
-import { useAuth } from "../../hooks/useAuth";
+import useAuth2 from "../../hooks/useAuth2";
 
 interface ProductCardProps {
   product: Product;
@@ -12,7 +12,7 @@ const ProductCard = ({ product }: ProductCardProps) => {
   const { _id, images, title, price, stock, reviews } = product;
 
   const { addToCart } = useCart();
-  const { user } = useAuth();
+  const { user } = useAuth2();
   return (
     <Card href={`/products/${_id}`} className="flex-1 max-w-sm">
       <div className="relative overflow-hidden rounded-t-lg ">

@@ -4,7 +4,7 @@ import { useParams } from "react-router-dom";
 import { LoaderCircle } from "lucide-react";
 import QuantityInput from "./QuantityInput";
 import { useCart } from "../../hooks/useCart";
-import { useAuth } from "../../hooks/useAuth";
+import useAuth2 from "../../hooks/useAuth2";
 
 const SingleProductPage = () => {
   const { id } = useParams();
@@ -20,7 +20,7 @@ const SingleProductPage = () => {
   const [quantity, setQuantity] = useState(1);
 
   const { addToCart } = useCart();
-  const { user } = useAuth();
+  const { user } = useAuth2();
 
   const increaseQuantity = useCallback(
     () => setQuantity(quantity + 1),

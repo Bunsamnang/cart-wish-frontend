@@ -1,9 +1,9 @@
 import Table from "../common/Table";
-import { useAuth } from "../hooks/useAuth";
+import useAuth2 from "../hooks/useAuth2";
 import { useCart } from "../hooks/useCart";
 
 const CartPage = () => {
-  const { user } = useAuth();
+  const { user } = useAuth2();
   const { cart } = useCart();
   console.log(user);
 

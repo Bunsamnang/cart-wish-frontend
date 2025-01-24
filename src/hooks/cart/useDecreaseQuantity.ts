@@ -1,11 +1,11 @@
 import { useMutation, useQueryClient } from "@tanstack/react-query";
-import { useAuth } from "../useAuth";
 import { decreaseQuantity } from "../../components/services/cartServices";
 import { toast } from "react-toastify";
+import useAuth2 from "../useAuth2";
 
 const useDecreaseQuantity = () => {
   const queryClient = useQueryClient();
-  const { user } = useAuth();
+  const { user } = useAuth2();
 
   return useMutation({
     mutationFn: async (productId: string) => {

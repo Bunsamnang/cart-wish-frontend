@@ -1,12 +1,12 @@
 import { AlignJustify } from "lucide-react";
 import { useEffect, useState } from "react";
 import { Link, NavLink, useNavigate } from "react-router-dom";
-import { useAuth } from "../hooks/useAuth";
 import { useCart } from "../hooks/useCart";
 import setAuthToken from "../utils/setAuthToken";
 import { useOpen } from "../hooks/useOpen";
 import { getSuggestionsAPI } from "./services/productServices";
 import Navlink from "../common/Navlink";
+import useAuth2 from "../hooks/useAuth2";
 interface NavBarProps {
   onOpenSignupModal: () => void;
 }
@@ -18,7 +18,9 @@ interface Suggestions {
 
 const NavBar = ({ onOpenSignupModal }: NavBarProps) => {
   // if user is logged in
-  const { user, setUser } = useAuth();
+  // const { user, setUser } = useAuth();
+
+  const { user, logout } = useAuth2();
 
   const { cart } = useCart();
 
@@ -31,6 +33,8 @@ const NavBar = ({ onOpenSignupModal }: NavBarProps) => {
   const [selectedItem, setSelectedItem] = useState(-1);
 
   const { openLoginModal, setOpenLoginModal } = useOpen();
+
+  console.log(user);
 
   useEffect(() => {
     async function getSuggestions() {
@@ -70,7 +74,7 @@ const NavBar = ({ onOpenSignupModal }: NavBarProps) => {
   }, [isExpanded]);
 
   const handleLogout = () => {
-    setUser(null);
+    logout();
     localStorage.removeItem("token");
     setAuthToken("");
 

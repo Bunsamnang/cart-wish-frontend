@@ -2,13 +2,12 @@ import { Modal, ModalBody, ModalFooter, ModalHeader } from "flowbite-react";
 import { User } from "lucide-react";
 import TextInputField from "./TextInputField";
 import { useForm } from "react-hook-form";
-import { SignupCredentials, singupSchema, User as user } from "./AuthModel";
+import { SignupCredentials, singupSchema } from "./AuthModel";
 import { useState } from "react";
-import { signup } from "../components/services/userServices";
-import { useAuth } from "../hooks/useAuth";
-import { jwtDecode } from "jwt-decode";
+import { signup as signupAPI } from "../components/services/userServices";
 import setAuthToken from "../utils/setAuthToken";
 import { zodResolver } from "./../../node_modules/@hookform/resolvers/zod/src/zod";
+import useAuth2 from "../hooks/useAuth2";
 
 interface SignupModalProps {
   openModal: boolean;
@@ -18,7 +17,9 @@ interface SignupModalProps {
 const SignupModal = ({ openModal, onCloseModal }: SignupModalProps) => {
   const [profilePic, setProfilePic] = useState<File | null>(null);
 
-  const { setUser } = useAuth();
+  // const { setUser } = useAuth();
+
+  const { signup } = useAuth2();
 
   console.log(profilePic);
 
@@ -34,15 +35,16 @@ const SignupModal = ({ openModal, onCloseModal }: SignupModalProps) => {
   const onSubmit = async (formData: SignupCredentials) => {
     try {
       // Use `profilePic ?? undefined` to ensure it's compatible with the `signup` function
-      const res = await signup(formData, profilePic ?? undefined);
+      const res = await signupAPI(formData, profilePic ?? undefined);
 
       // update state of user to signed in
-      setUser(jwtDecode<user>(res.token));
+      // setUser(jwtDecode<user>(res.token));
+
+      signup(res.token);
       setAuthToken(res.token);
 
       reset();
       onCloseModal();
-      window.location.reload();
       // eslint-disable-next-line @typescript-eslint/no-explicit-any
     } catch (error: any) {
       if (error.response && error.response.status === 400) {

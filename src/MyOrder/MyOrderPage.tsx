@@ -1,7 +1,7 @@
 import { LoaderCircle } from "lucide-react";
 import { Order } from "../Cart/Order";
-import { useAuth } from "../hooks/useAuth";
 import useData from "../hooks/useData";
+import useAuth2 from "../hooks/useAuth2";
 
 interface MyOrderPageProps {
   headings: string[];
@@ -25,7 +25,7 @@ interface MyOrderAPI {
 }
 
 const MyOrderPage = ({ headings }: MyOrderPageProps) => {
-  const { user } = useAuth();
+  const { user } = useAuth2();
   const {
     data: orders,
     isLoading,
