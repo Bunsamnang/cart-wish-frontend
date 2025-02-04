@@ -20,9 +20,6 @@ export const CartProvider = ({ children }: { children: ReactNode }) => {
   const { data: cart } = useQuery<Cart[], Error>({
     queryKey: ["cart", user?._id],
     queryFn: async () => {
-      if (!user) {
-        return;
-      }
       const res = await getUserCartAPI();
       return res.data;
     },
