@@ -1,6 +1,6 @@
 import { useMutation, useQueryClient } from "@tanstack/react-query";
 import { useAuth } from "../useAuth";
-import { increaseQuantity } from "../../components/services/cartServices";
+import { increaseQuantity } from "../../services/cartServices";
 import { toast } from "react-toastify";
 
 const useIncreaseQuantity = () => {

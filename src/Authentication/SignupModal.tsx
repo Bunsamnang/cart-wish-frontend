@@ -4,7 +4,7 @@ import TextInputField from "./TextInputField";
 import { useForm } from "react-hook-form";
 import { SignupCredentials, singupSchema } from "./AuthModel";
 import { useState } from "react";
-import { signup as signupAPI } from "../components/services/userServices";
+import { signup as signupAPI } from "../services/userServices";
 import setAuthToken from "../utils/setAuthToken";
 import { zodResolver } from "./../../node_modules/@hookform/resolvers/zod/src/zod";
 import useAuth2 from "../hooks/useAuth2";

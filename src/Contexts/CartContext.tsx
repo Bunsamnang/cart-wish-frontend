@@ -1,7 +1,7 @@
 import { createContext, ReactNode } from "react";
 import { Cart } from "../Cart/Cart";
 import { Product } from "../hooks/useData";
-import { getUserCartAPI } from "../components/services/cartServices";
+import { getUserCartAPI } from "../services/cartServices";
 import { useQuery } from "@tanstack/react-query";
 import useAddToCart from "../hooks/cart/useAddToCart";
 import useAuth2 from "../hooks/useAuth2";

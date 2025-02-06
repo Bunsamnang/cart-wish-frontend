@@ -4,7 +4,7 @@ import { Link, NavLink, useNavigate } from "react-router-dom";
 import { useCart } from "../hooks/useCart";
 import setAuthToken from "../utils/setAuthToken";
 import { useOpen } from "../hooks/useOpen";
-import { getSuggestionsAPI } from "./services/productServices";
+import { getSuggestionsAPI } from "../services/productServices";
 import Navlink from "../common/Navlink";
 import useAuth2 from "../hooks/useAuth2";
 interface NavBarProps {

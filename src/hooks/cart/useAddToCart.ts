@@ -1,5 +1,5 @@
 import { useMutation, useQueryClient } from "@tanstack/react-query";
-import { addToCartApi } from "../../components/services/cartServices";
+import { addToCartApi } from "../../services/cartServices";
 import { toast } from "react-toastify";
 import useAuth2 from "../useAuth2";
 

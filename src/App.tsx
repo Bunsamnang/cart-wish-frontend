@@ -6,7 +6,7 @@ import Routing from "./components/Routing/Routing";
 import { AuthProvider } from "./Contexts/AuthContext";
 import { CartProvider } from "./Contexts/CartContext";
 import setAuthToken from "./utils/setAuthToken";
-import { getJwt } from "./components/services/userServices";
+import { getJwt } from "./services/userServices";
 import { ToastContainer } from "react-toastify";
 import "react-toastify/ReactToastify.css";
 import { ArrowUpFromLine } from "lucide-react";

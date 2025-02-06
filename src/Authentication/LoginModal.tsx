@@ -2,7 +2,7 @@ import { Modal, ModalBody, ModalFooter, ModalHeader } from "flowbite-react";
 import TextInputField from "./TextInputField";
 import { useForm } from "react-hook-form";
 import { LoginCredentials, loginSchema } from "./AuthModel";
-import { login as loginAPI } from "../components/services/userServices";
+import { login as loginAPI } from "../services/userServices";
 
 import setAuthToken from "../utils/setAuthToken";
 import { useOpen } from "../hooks/useOpen";

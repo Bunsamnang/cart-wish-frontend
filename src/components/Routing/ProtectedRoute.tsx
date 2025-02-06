@@ -1,5 +1,5 @@
 import { Navigate, Outlet, useLocation } from "react-router-dom";
-import { getJwt } from "../services/userServices";
+import { getJwt } from "../../services/userServices";
 import { useOpen } from "../../hooks/useOpen";
 import { useEffect } from "react";
 

@@ -1,5 +1,5 @@
 import { useMutation, useQueryClient } from "@tanstack/react-query";
-import { checkOutAPI } from "../../components/services/orderServices";
+import { checkOutAPI } from "../../services/orderServices";
 import { toast } from "react-toastify";
 import useAuth2 from "../useAuth2";
 

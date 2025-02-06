@@ -1,7 +1,7 @@
 import { createContext, ReactNode, useEffect, useState } from "react";
 import { User } from "../Authentication/AuthModel";
 import { jwtDecode } from "jwt-decode";
-import { getJwt } from "../components/services/userServices";
+import { getJwt } from "../services/userServices";
 
 interface AuthContextType {
   user: User | null;

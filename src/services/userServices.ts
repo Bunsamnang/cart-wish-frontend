@@ -1,8 +1,8 @@
 import {
   LoginCredentials,
   SignupCredentials,
-} from "../../Authentication/AuthModel";
-import api_client from "../../utils/api_client";
+} from "../Authentication/AuthModel";
+import api_client from "../utils/api_client";
 
 const tokenName = "token";
 
