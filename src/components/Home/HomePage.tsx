@@ -4,7 +4,7 @@ import mac from "../../assets/images/mac-system-cut.jfif";
 import FeaturedProducts from "./FeaturedProducts";
 const HomePage = () => {
   return (
-    <div>
+    <div className="overflow-x-hidden">
       <HeroSection
         image={iphone}
         title="Buy iPhone 14 Pro"

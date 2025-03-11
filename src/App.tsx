@@ -54,7 +54,7 @@ const App = () => {
   return (
     <AuthProvider>
       <CartProvider>
-        <div className="app grid grid-rows-[100px_auto] max-md:grid-rows-[auto_auto]">
+        <div className="app  grid grid-rows-[100px_auto] max-md:grid-rows-[auto_auto]">
           <NavBar onOpenSignupModal={() => setOpenSignupModal(true)} />
 
           <main className="pt-16">
